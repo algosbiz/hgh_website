@@ -1,0 +1,225 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>html,body{margin:0;background:#f4eee4;overflow:hidden}canvas{display:block}</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<script type="module">
+import * as THREE from "three";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+
+const params = new URLSearchParams(location.search);
+const mode = params.get("mode") || "hero";
+const W = Number(params.get("w") || 1600);
+const H = Number(params.get("h") || 1600);
+const BG = params.get("bg") || "#f4eee4";
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(W, H);
+renderer.toneMapping = THREE.NeutralToneMapping;
+renderer.toneMappingExposure = 1.0;
+renderer.setClearColor(new THREE.Color(BG), 1);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.VSMShadowMap;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = 0.9;
+
+// ---------- Materials ----------
+const gold = new THREE.MeshPhysicalMaterial({ color: 0xd9bf8c, metalness: 1, roughness: 0.3, clearcoat: 0.2 });
+const goldBrushed = new THREE.MeshPhysicalMaterial({ color: 0xcfb07a, metalness: 1, roughness: 0.45 });
+const glass = new THREE.MeshPhysicalMaterial({
+  color: 0xffffff, metalness: 0, roughness: 0.0, transmission: 1, thickness: 0.12,
+  ior: 1.5, clearcoat: 1, clearcoatRoughness: 0.03, specularIntensity: 1, envMapIntensity: 1.2,
+  
+});
+const powder = new THREE.MeshStandardMaterial({ color: 0xfdfbf6, roughness: 0.95 });
+const rubber = new THREE.MeshStandardMaterial({ color: 0x8d9297, roughness: 0.7 });
+const whitePlastic = new THREE.MeshPhysicalMaterial({ color: 0xfbfaf7, roughness: 0.32, clearcoat: 0.6, clearcoatRoughness: 0.2 });
+const inkPlastic = new THREE.MeshPhysicalMaterial({ color: 0x121b22, roughness: 0.35, clearcoat: 0.5 });
+const darkWindow = new THREE.MeshPhysicalMaterial({ color: 0x1b2730, roughness: 0.1, clearcoat: 1 });
+const floorMat = new THREE.ShadowMaterial({ color: 0x5a4a32, opacity: 0.22 });
+
+function cartonMaterial(base = "#fbf8f2", band = "#c8a872") {
+  const c = document.createElement("canvas");
+  c.width = 1024; c.height = 512;
+  const g = c.getContext("2d");
+  g.fillStyle = base; g.fillRect(0, 0, 1024, 512);
+  g.fillStyle = band; g.fillRect(0, 300, 1024, 18); g.fillRect(0, 330, 1024, 4);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  const side = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.75 });
+  const plain = new THREE.MeshStandardMaterial({ color: base, roughness: 0.75 });
+  return [side, side, plain, plain, side, side];
+}
+
+// ---------- Objects ----------
+function vial(scale = 1, capMat = gold) {
+  const g = new THREE.Group();
+  const pts = [];
+  const add = (r, y) => pts.push(new THREE.Vector2(r, y));
+  add(0.0, 0.0); add(0.58, 0.0); add(0.67, 0.04); add(0.7, 0.13);
+  add(0.7, 2.5); add(0.67, 2.62); add(0.52, 2.74); add(0.4, 2.8); add(0.37, 2.84);
+  add(0.37, 3.04); add(0.45, 3.06); add(0.45, 3.16); add(0.0, 3.16);
+  const body = new THREE.Mesh(new THREE.LatheGeometry(pts, 128), glass);
+  body.castShadow = true;
+  g.add(body);
+
+  // freeze-dried powder cake
+  const cakeGeo = new THREE.CylinderGeometry(0.61, 0.62, 0.5, 96, 8);
+  const pos = cakeGeo.attributes.position;
+  for (let i = 0; i < pos.count; i++) {
+    const y = pos.getY(i);
+    if (y > 0.2) {
+      const x = pos.getX(i), z = pos.getZ(i);
+      pos.setY(i, y + Math.sin(x * 7 + z * 3) * 0.02 + Math.cos(z * 9) * 0.012 - (x * x + z * z) * 0.05);
+    }
+  }
+  cakeGeo.computeVertexNormals();
+  const cake = new THREE.Mesh(cakeGeo, powder);
+  cake.position.y = 0.32;
+  cake.castShadow = true;
+  g.add(cake);
+
+  const crimp = new THREE.Mesh(new THREE.CylinderGeometry(0.49, 0.49, 0.26, 128), capMat);
+  crimp.position.y = 3.15; crimp.castShadow = true;
+  g.add(crimp);
+  const crimpLip = new THREE.Mesh(new THREE.TorusGeometry(0.48, 0.03, 16, 128), capMat);
+  crimpLip.rotation.x = Math.PI / 2; crimpLip.position.y = 3.03;
+  g.add(crimpLip);
+  const flip = new THREE.Mesh(new THREE.CylinderGeometry(0.44, 0.46, 0.13, 128), capMat === gold ? goldBrushed : gold);
+  flip.position.y = 3.34; flip.castShadow = true;
+  g.add(flip);  g.scale.setScalar(scale);
+  return g;
+}
+
+function pen(scale = 1, accent = gold) {
+  const g = new THREE.Group();
+  const seg = (r, len, mat, x, segs = 96) => {
+    const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, segs), mat);
+    m.rotation.z = Math.PI / 2; m.position.x = x; m.castShadow = true; m.receiveShadow = true;
+    g.add(m); return m;
+  };
+  // cap with rounded end
+  seg(0.62, 4.2, whitePlastic, -5.1);
+  const capEnd = new THREE.Mesh(new THREE.SphereGeometry(0.62, 64, 32, 0, Math.PI * 2, 0, Math.PI / 2), whitePlastic);
+  capEnd.rotation.z = Math.PI / 2; capEnd.position.x = -7.2; capEnd.scale.y = 0.35; capEnd.castShadow = true;
+  g.add(capEnd);
+  seg(0.635, 0.16, accent, -3.0);
+  // clip
+  const clip = new THREE.Mesh(new THREE.BoxGeometry(3.0, 0.12, 0.3), accent);
+  clip.position.set(-5.2, 0.7, 0); clip.castShadow = true;
+  g.add(clip);
+  // body
+  seg(0.6, 7.6, whitePlastic, 0.9);
+  // dose window
+  const win = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.5, 0.2), darkWindow);
+  win.position.set(3.2, 0, 0.53);
+  g.add(win);
+  // gold rings + dose knob
+  seg(0.615, 0.12, accent, 4.75);
+  seg(0.55, 0.25, accent, 5.0);
+  const knob = seg(0.52, 1.1, accent, 5.65, 48);
+  knob.material = goldBrushed;
+  for (let i = 0; i < 6; i++) seg(0.535, 0.05, accent, 5.2 + i * 0.17, 48);
+  const knobEnd = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.5, 0.18, 48), accent);
+  knobEnd.rotation.z = Math.PI / 2; knobEnd.position.x = 6.28;
+  g.add(knobEnd);
+  g.scale.setScalar(scale);
+  return g;
+}
+
+function carton(w, h, d, base, band) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d, 1, 1, 1), cartonMaterial(base, band));
+  m.castShadow = true; m.receiveShadow = true;
+  return m;
+}
+
+// ---------- Floor & lights ----------
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), floorMat);
+floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true;
+scene.add(floor);
+
+const key = new THREE.DirectionalLight(0xfff3e2, 2.6);
+key.position.set(-6, 12, 8);
+key.castShadow = true;
+key.shadow.mapSize.set(4096, 4096);
+key.shadow.radius = 18; key.shadow.blurSamples = 25;
+key.shadow.camera.left = -14; key.shadow.camera.right = 14;
+key.shadow.camera.top = 14; key.shadow.camera.bottom = -14;
+key.shadow.bias = -0.0004;
+scene.add(key);
+const rim = new THREE.DirectionalLight(0xffffff, 0.9);
+rim.position.set(8, 6, -6);
+scene.add(rim);
+
+const camera = new THREE.PerspectiveCamera(Number(params.get("fov") || 20), W / H, 0.1, 400);
+
+// ---------- Compositions ----------
+const content = new THREE.Group();
+scene.add(content);
+const az = (deg) => (deg * Math.PI) / 180;
+let view = { azimuth: 25, elevation: 22, margin: 1.15, target: null };
+
+if (mode === "hero") {
+  const box = carton(5.4, 3.0, 3.0, "#fbf8f2", "#c8a872");
+  box.position.set(-2.6, 1.5, -2.6); box.rotation.y = 0.35;
+  content.add(box);
+  [[0.6, 0.3], [2.5, -0.9], [-1.0, 1.6]].forEach(([x, z], i) => {
+    const v = vial(1.2, gold); v.position.set(x, 0, z); v.rotation.y = i * 2; content.add(v);
+  });
+  const p = pen(0.55); p.position.set(1.2, 0.33, 3.4); p.rotation.y = -0.42; content.add(p);
+  view = { azimuth: 24, elevation: 18, margin: 0.74 };
+} else if (mode === "boxes") {
+  const box = carton(5.6, 3.0, 3.0, "#fbf8f2", "#c8a872");
+  box.position.set(-2.0, 1.5, -1.6); box.rotation.y = 0.28;
+  content.add(box);
+  [[1.7, 0.9], [3.3, -0.3], [2.6, 2.3], [0.4, 2.5]].forEach(([x, z], i) => {
+    const v = vial(1.1, gold); v.position.set(x, 0, z); v.rotation.y = i * 1.3; content.add(v);
+  });
+  view = { azimuth: 26, elevation: 15, margin: 0.74 };} else if (mode === "pens") {
+  const a = pen(0.9); a.position.set(0, 0.54, -1.0); a.rotation.y = 0.35; content.add(a);
+  const b = pen(0.9); b.position.set(0.9, 0.54, 1.1); b.rotation.order = "YXZ"; b.rotation.y = 0.35; b.rotation.x = Math.PI * 0.6; content.add(b);
+  view = { azimuth: 10, elevation: 40, margin: 0.7 };
+} else if (mode === "vial") {
+  const v = vial(1.8, gold); v.position.set(0.6, 0, 0.6); content.add(v);
+  const v2 = vial(1.8, gold); v2.position.set(-1.4, 0, -1.6); v2.rotation.y = 1; content.add(v2);
+  view = { azimuth: 30, elevation: 12, margin: 0.95 };
+}
+
+// Fit the camera so the whole composition is framed with a margin.
+const boxBounds = new THREE.Box3().setFromObject(content);
+const sphere = boxBounds.getBoundingSphere(new THREE.Sphere());
+const fov = (camera.fov * Math.PI) / 180;
+const fitH = sphere.radius / Math.sin(fov / 2);
+const fitW = sphere.radius / Math.sin(Math.atan(Math.tan(fov / 2) * camera.aspect));
+const dist = Math.max(fitH, fitW) * Number(params.get("margin") || view.margin);
+const dir = new THREE.Vector3(
+  Math.sin(az(view.azimuth)) * Math.cos(az(view.elevation)),
+  Math.sin(az(view.elevation)),
+  Math.cos(az(view.azimuth)) * Math.cos(az(view.elevation)),
+);
+const target = sphere.center.clone();
+target.y -= sphere.radius * Number(params.get("oy") || 0);
+target.x -= sphere.radius * Number(params.get("ox") || 0);
+camera.position.copy(target).addScaledVector(dir, dist);
+camera.lookAt(target);
+if (params.get("margin")) {}
+renderer.render(scene, camera);
+window.__done = true;
+</script>
+</body>
+</html>

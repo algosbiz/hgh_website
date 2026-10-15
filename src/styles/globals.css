@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+/*
+ * HGH Bali design tokens
+ * ----------------------
+ * Change brand colours, radii and shadows here only. Every component uses
+ * these tokens through Tailwind classes such as `bg-cream`, `text-ink`,
+ * `border-line` or `text-gold-deep`.
+ *
+ * Palette sources:
+ *  - ink / cream / line ........ Bali Peptides reference (60%)
+ *  - gold / gold-soft .......... HGH Bali logo gold + Peptide Pens Bali (40%)
+ */
+@theme {
+  --color-ink: #101a21;
+  --color-ink-soft: #24303a;
+  --color-body: #3b444c;
+  --color-muted: #5f676f;
+  --color-cream: #fbf8f2;
+  --color-sand: #f4eee4;
+  --color-paper: #ffffff;
+  --color-line: #e7dfd2;
+  --color-line-strong: #d3c6b2;
+  --color-gold: #b8862b;
+  --color-gold-bright: #d4b062;
+  --color-gold-deep: #8a5f14;
+  --color-gold-soft: #f4e9d4;
+  --color-whatsapp: #25d366; /* WhatsApp brand green (floating button) */
+
+  /* Product status colours (text / background pairs, WCAG AA) */
+  --color-status-neutral: #4a5057;
+  --color-status-neutral-bg: #edebe7;
+  --color-status-info: #2d4b5f;
+  --color-status-info-bg: #e6edf1;
+  --color-status-warning: #7a5410;
+  --color-status-warning-bg: #f6ead1;
+  --color-status-danger: #8a3b2c;
+  --color-status-danger-bg: #f5e4df;
+  --color-status-success: #2e5e43;
+  --color-status-success-bg: #e2eee6;
+
+  --radius-card: 1.25rem;
+  --shadow-soft:
+    0 1px 2px rgb(16 26 33 / 0.04), 0 12px 32px -16px rgb(16 26 33 / 0.14);
+  --shadow-lift:
+    0 2px 4px rgb(16 26 33 / 0.04), 0 28px 56px -24px rgb(16 26 33 / 0.24);
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Fonts are self-hosted by next/font (see src/app/layout.tsx). */
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-display-italic: var(--font-fraunces-italic), ui-serif, Georgia, serif;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 6.5rem;
+  }
+
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-body);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv11", "ss01";
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--color-ink);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: var(--color-gold-soft);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold-deep);
+    outline-offset: 3px;
+  }
+
+  summary {
+    list-style: none;
+    cursor: pointer;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  dialog::backdrop {
+    background-color: rgb(16 26 33 / 0.45);
+  }
+
+  /* Prevent the page behind an open modal (mobile menu) from scrolling. */
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
