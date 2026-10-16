@@ -1,8 +1,14 @@
-/** A product that can be added to the cart (built on the server). */
+/**
+ * Something that can be added to the cart (built on the server): a product,
+ * or one variant of it (e.g. one pen type).
+ */
 export interface CartCatalogueItem {
+  /** The product ID, or "<product ID>:<variant ID>" for a variant. */
   id: string;
+  /** The HGH Bali product this item belongs to. */
+  productId: string;
   name: string;
-  /** Short line under the name in the cart, e.g. "HGH box". */
+  /** Short line under the name in the cart: the variant (e.g. "Reusable pen") or "HGH box". */
   label: string;
   href: string;
   image: { src: string; alt: string };

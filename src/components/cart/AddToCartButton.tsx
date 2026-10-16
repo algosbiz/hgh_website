@@ -1,6 +1,7 @@
 "use client";
 
-import { ShoppingBag } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, ShoppingBag } from "lucide-react";
 import { buttonClasses } from "@/components/ui/Button";
 import { trackEvent } from "@/lib/analytics";
 import { addToCart } from "@/lib/cart-store";
@@ -9,6 +10,7 @@ import { useCart } from "./CartProvider";
 
 /**
  * Compact "Add to cart" for product cards: adds one unit and opens the cart.
+ * Products with variants link to their page to choose one instead.
  * Renders nothing for products that are not sold online.
  */
 export function AddToCartButton({
@@ -18,11 +20,11 @@ export function AddToCartButton({
   productId: string;
   className?: string;
 }) {
-  const { catalogue, openCart } = useCart();
-  const item = catalogue.get(productId);
-  if (!item) return null;
+  const { productItems, openCart } = useCart();
+  const items = productItems.get(productId);
+  if (!items) return null;
 
-  if (item.inStock === false) {
+  if (items.every((item) => item.inStock === false)) {
     return (
       <span
         className={cn(
@@ -32,6 +34,18 @@ export function AddToCartButton({
       >
         Out of stock
       </span>
+    );
+  }
+
+  const [item] = items;
+
+  if (items.length > 1) {
+    return (
+      <Link href={item.href} className={buttonClasses("primary", "md", className)}>
+        Choose options
+        <span className="sr-only">: {item.name}</span>
+        <ArrowRight aria-hidden="true" className="size-4" />
+      </Link>
     );
   }
 

@@ -10,8 +10,10 @@ interface ResolvedLine {
 }
 
 interface CartContextValue {
-  /** Products that can be added to the cart, by HGH Bali product ID. */
+  /** Everything that can be added to the cart, by cart item ID. */
   catalogue: Map<string, CartCatalogueItem>;
+  /** The same items grouped by HGH Bali product ID (several for variants). */
+  productItems: Map<string, CartCatalogueItem[]>;
   lines: ResolvedLine[];
   /** Total number of units in the cart. */
   count: number;
@@ -40,6 +42,10 @@ export function CartProvider({
 
   const value = useMemo<CartContextValue>(() => {
     const catalogue = new Map(items.map((item) => [item.id, item]));
+    const productItems = new Map<string, CartCatalogueItem[]>();
+    for (const item of items) {
+      productItems.set(item.productId, [...(productItems.get(item.productId) ?? []), item]);
+    }
     // Lines for products that are no longer sold online are ignored.
     const lines = saved.flatMap((line) => {
       const item = catalogue.get(line.id);
@@ -47,6 +53,7 @@ export function CartProvider({
     });
     return {
       catalogue,
+      productItems,
       lines,
       count: lines.reduce((total, line) => total + line.quantity, 0),
       openSignal,

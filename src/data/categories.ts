@@ -81,7 +81,7 @@ export const categories: Record<ProductCategory, CategoryInfo> = {
     itemLabel: "HGH pen",
     href: "/products/pens/",
     description:
-      "Pen presentations. Each option lists its pen type, labelled strength and contents once confirmed against the product label.",
+      "HGH Somatropin pens in five strengths, each available as a disposable pen, a reusable pen or a replacement cartridge.",
     seoTitle: "Pens — Product Catalogue",
     seoDescription:
       "Browse the pen options in the HGH Bali catalogue by Atlas Longevity, with labelled specifications, packaging details and batch documentation.",

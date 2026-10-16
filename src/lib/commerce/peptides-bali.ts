@@ -1,4 +1,4 @@
-import type { Product } from "@/types/product";
+import type { Product, ProductVariant } from "@/types/product";
 
 /**
  * Peptides Bali (https://peptidesbali.online) — the WooCommerce store where
@@ -18,12 +18,30 @@ export const peptidesBali = {
 /** Highest quantity of one product the cart accepts. */
 export const MAX_CART_QUANTITY = 10;
 
+/** One thing a product can put in the Peptides Bali cart. */
+export interface CheckoutOption {
+  /** `null` for products without variants. */
+  variant: ProductVariant | null;
+  /**
+   * The WooCommerce ID that goes into the destination cart: the variation ID
+   * for variable products, otherwise the product ID.
+   */
+  checkoutId: number;
+}
+
 /**
- * The WooCommerce ID that goes into the destination cart: the variation ID
- * for variable products, otherwise the product ID. `null` = not sold online.
+ * Everything a product can put in the Peptides Bali cart: one option per
+ * variant (e.g. pen type), or the product itself. Empty = not sold online.
  */
-export function getCheckoutId(product: Product): number | null {
-  return product.commerce.variationId ?? product.commerce.productId;
+export function getCheckoutOptions(product: Product): CheckoutOption[] {
+  if (product.variants) {
+    return product.variants.options.map((variant) => ({
+      variant,
+      checkoutId: variant.variationId,
+    }));
+  }
+  const checkoutId = product.commerce.variationId ?? product.commerce.productId;
+  return checkoutId === null ? [] : [{ variant: null, checkoutId }];
 }
 
 export interface CheckoutLine {

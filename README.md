@@ -170,6 +170,29 @@ Bali** (dibaca tiap jam, lihat bagian 17), jadi harga selalu sama dengan peptide
 `amount` hanya dipakai jika Peptides Bali tidak bisa diakses — tetap samakan dengan harga
 di sana.
 
+**Varian (pilihan di halaman produk):** produk bisa punya beberapa pilihan, masing-masing
+dengan harga, stok dan ID variasi Peptides Bali sendiri — dipakai untuk tipe pen. Isi
+`variants`, lalu `price: null` dan `commerce.variationId: null` di level produk:
+
+```ts
+variants: {
+  label: "Pen type",               // judul pilihan di halaman produk
+  options: [
+    {
+      id: "reusable",              // unik dalam produk; ID keranjang jadi "pen-10iu:reusable"
+      label: "Reusable pen",       // tampil di pilihan & keranjang
+      price: { amount: 2_100_000, currency: "IDR", approvedForDisplay: true },
+      variationId: 9986,           // ID variasi WooCommerce
+    },
+    // …
+  ],
+},
+```
+
+Kartu produk lalu menampilkan **"From Rp …"** (harga terendah) dan tombol **Choose options**;
+di halaman produk pengunjung memilih tipe, dan harga, stok, Add to cart serta Buy now ikut
+pilihan itu. Pilihan pertama yang ada stoknya terpilih otomatis.
+
 **Dokumen produk:** tautan hanya muncul jika `status: "available"` dan `href` diisi:
 
 ```ts
@@ -562,10 +585,13 @@ Pemetaan saat ini (16 Oktober 2026):
 | HGH Somatropin 180 IU Box | HGH Somatropin Bali & Indonesia (`hgh-somatropin-bali-indonesia`, 10304) — 180 IU | 10306 |
 | HGH 24 IU Vial / HGH 36 IU Vial | HGH (`hgh-10iu-bali`, 1217) — 24 / 36 IU | 10062 / 5709 |
 | HGH Somatropin 100 IU (Single Vials) | HGH Somatropin Bali & Indonesia (10304) — 100 IU | 10305 |
-| HGH Somatropin Pen 10 / 24 / 36 / 72 / 108 IU | HGH Somatropin (`hgh-somatropin`, 9981), disposable pen | 9984 / 10064 / 9985 / 10065 / 10066 |
+| HGH Somatropin Pen 10 / 24 / 36 / 72 / 108 IU — *Disposable pen* | HGH Somatropin (`hgh-somatropin`, 9981) | 9984 / 10064 / 9985 / 10065 / 10066 |
+| … — *Reusable pen* | HGH Somatropin (9981) | 9986 / 10067 / 9987 / 10068 / 10069 |
+| … — *Cartridge* | HGH Somatropin (9981) | 9988 / 10070 / 9989 / 10071 / 10072 |
 
-Pen masih `mappingConfirmed: false`: Peptides Bali juga punya variasi *reusable pen* dan
-*cartridge*; yang dipakai adalah *disposable pen* sampai klien mengonfirmasi.
+Kelima pen memakai `variants` (lihat bagian 3): tipe pen dipilih di halaman produk. Semua
+tipe memakai foto disposable pen dengan IU yang sama, karena foto reusable pen dan cartridge
+di Peptides Bali adalah infografis umum yang memperlihatkan peptide lain.
 
 Cara mencari ID: buka
 `https://peptidesbali.online/wp-json/wc/store/v1/products/<ID produk>` — daftar

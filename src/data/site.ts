@@ -78,7 +78,7 @@ export const mainNav: NavItem[] = [
       {
         label: "Pens",
         href: "/products/pens/",
-        description: "Five pen options",
+        description: "Five strengths, three pen types",
       },
     ],
   },

@@ -25,7 +25,7 @@ export const faqGroups: FaqGroup[] = [
       {
         question: "What products does HGH Bali list?",
         answer:
-          "The catalogue lists two HGH boxes, three single vial options and five pens. Each product page shows the labelled strength, packaging details and price; anything not yet confirmed against the product label and supporting documentation is marked “To be confirmed”.",
+          "The catalogue lists two HGH boxes, three single vial options and five pen strengths (each as a disposable pen, reusable pen or cartridge). Each product page shows the labelled strength, packaging details and price; anything not yet confirmed against the product label and supporting documentation is marked “To be confirmed”.",
         featured: true,
       },
       {

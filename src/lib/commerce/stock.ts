@@ -1,6 +1,6 @@
 import { cacheLife } from "next/cache";
 import { products } from "@/data/products";
-import { getCheckoutId, peptidesBali } from "./peptides-bali";
+import { getCheckoutOptions, peptidesBali } from "./peptides-bali";
 
 /** What Peptides Bali reports for one checkout ID. */
 export interface DestinationProduct {
@@ -52,14 +52,14 @@ export async function getDestinationProducts(): Promise<DestinationMap> {
   "use cache";
   cacheLife("hours");
 
-  const variationIds = products.flatMap((product) =>
-    product.commerce.variationId === null ? [] : [product.commerce.variationId],
-  );
-  const productIds = products.flatMap((product) =>
-    product.commerce.variationId === null && getCheckoutId(product) !== null
-      ? [product.commerce.productId as number]
-      : [],
-  );
+  const variationIds: number[] = [];
+  const productIds: number[] = [];
+  for (const product of products) {
+    for (const { checkoutId } of getCheckoutOptions(product)) {
+      // A checkout ID equal to the product ID is a simple (non-variable) product.
+      (checkoutId === product.commerce.productId ? productIds : variationIds).push(checkoutId);
+    }
+  }
 
   try {
     const results = await Promise.all([

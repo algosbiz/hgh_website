@@ -162,15 +162,18 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
             <h2 className="sr-only">Key specifications</h2>
             <SpecList specs={product.specifications.slice(0, 4)} className="mt-8" />
 
-            <ProductPrice
-              productId={product.id}
-              fallback={getDisplayPrice(product)}
-              className="mt-8 font-display text-4xl text-ink tabular-nums"
-            />
+            {/* Products with variants show the chosen variant's price in ProductPurchase. */}
+            {product.variants && action.kind === "cart" ? null : (
+              <ProductPrice
+                productId={product.id}
+                fallback={getDisplayPrice(product)}
+                className="mt-8 font-display text-4xl text-ink tabular-nums"
+              />
+            )}
 
             {action.kind === "cart" ? (
               <div className="mt-8">
-                <ProductPurchase productId={product.id} />
+                <ProductPurchase productId={product.id} optionLabel={product.variants?.label} />
               </div>
             ) : (
               <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-1">

@@ -78,6 +78,17 @@ export interface ProductCommerceMapping {
   mappingConfirmed: boolean;
 }
 
+/** One purchasable option of a product, e.g. one pen type. */
+export interface ProductVariant {
+  /** Unique within the product, e.g. "reusable". Part of the cart line ID. */
+  id: string;
+  /** Shown in the option picker and the cart, e.g. "Reusable pen". */
+  label: string;
+  price: ProductPrice | null;
+  /** WooCommerce variation ID on Peptides Bali. */
+  variationId: number;
+}
+
 export interface Product {
   /** Unique internal ID, never shown to visitors. */
   id: string;
@@ -99,8 +110,19 @@ export interface Product {
   };
   documents: ProductDocument[];
   faqs: ProductFaq[];
+  /** For products with variants, each variant has its own price. */
   price: ProductPrice | null;
   commerce: ProductCommerceMapping;
+  /**
+   * Options chosen on the product page (e.g. pen type). Each option has its
+   * own price, stock and Peptides Bali variation; `commerce.variationId` is
+   * then `null`.
+   */
+  variants?: {
+    /** Name of the choice, e.g. "Pen type". */
+    label: string;
+    options: ProductVariant[];
+  };
   seo: {
     title: string;
     description: string;

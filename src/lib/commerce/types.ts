@@ -9,7 +9,7 @@ import type { Product } from "@/types/product";
  */
 export type ProductAction =
   | { kind: "enquire"; label: string; href: string }
-  | { kind: "cart"; checkoutId: number };
+  | { kind: "cart" };
 
 /**
  * A commerce provider decides which action a product gets.

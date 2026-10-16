@@ -3,6 +3,7 @@ import path from "node:path";
 import { categories } from "@/data/categories";
 import { products } from "@/data/products";
 import { getProductAction } from "@/lib/commerce";
+import { getCheckoutOptions } from "@/lib/commerce/peptides-bali";
 import type { DestinationMap } from "@/lib/commerce/stock";
 import type { CartCatalogueItem } from "@/types/cart";
 import type {
@@ -10,6 +11,7 @@ import type {
   Product,
   ProductCategory,
   ProductImage,
+  ProductPrice,
 } from "@/types/product";
 
 /**
@@ -59,35 +61,48 @@ export function getProductOptions() {
   }));
 }
 
-/** The price shown on the website before live prices apply, or `null`. */
-export function getDisplayPrice(product: Product): number | null {
-  return product.price?.approvedForDisplay ? product.price.amount : null;
+function approvedAmount(price: ProductPrice | null): number | null {
+  return price?.approvedForDisplay ? price.amount : null;
 }
 
 /**
- * Products that can be added to the cart, with their Peptides Bali stock and
- * price. The live price is only used for products whose price may be shown.
+ * The price shown on the website before live prices apply — the lowest
+ * variant price for products with variants — or `null`.
+ */
+export function getDisplayPrice(product: Product): number | null {
+  if (!product.variants) return approvedAmount(product.price);
+  const amounts = product.variants.options.flatMap((variant) => {
+    const amount = approvedAmount(variant.price);
+    return amount === null ? [] : [amount];
+  });
+  return amounts.length > 0 ? Math.min(...amounts) : null;
+}
+
+/**
+ * Everything that can be added to the cart (one item per product, or per
+ * variant), with its Peptides Bali stock and price. The live price is only
+ * used where a price may be shown.
  */
 export function getCartCatalogue(destination: DestinationMap): CartCatalogueItem[] {
   return getAllProducts().flatMap((product) => {
-    const action = getProductAction(product);
-    if (action.kind !== "cart") return [];
+    if (getProductAction(product).kind !== "cart") return [];
     const category = categories[product.category];
     const image = product.images[0] ?? category.illustration.square;
-    const live = destination[action.checkoutId];
-    const fallbackPrice = getDisplayPrice(product);
-    return [
-      {
-        id: product.id,
+    return getCheckoutOptions(product).map(({ variant, checkoutId }) => {
+      const live = destination[checkoutId];
+      const fallbackPrice = approvedAmount(variant ? variant.price : product.price);
+      return {
+        id: variant ? `${product.id}:${variant.id}` : product.id,
+        productId: product.id,
         name: product.name,
-        label: category.itemLabel,
+        label: variant?.label ?? category.itemLabel,
         href: `/products/${product.slug}/`,
         image: { src: image.src, alt: image.alt },
-        checkoutId: action.checkoutId,
+        checkoutId,
         inStock: live?.inStock ?? null,
         price: fallbackPrice === null ? null : (live?.price ?? fallbackPrice),
-      },
-    ];
+      };
+    });
   });
 }
 

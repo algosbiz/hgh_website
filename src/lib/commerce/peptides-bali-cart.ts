@@ -1,5 +1,5 @@
 import { enquiryOnlyProvider } from "./enquiry-only";
-import { getCheckoutId } from "./peptides-bali";
+import { getCheckoutOptions } from "./peptides-bali";
 import type { CommerceProvider } from "./types";
 
 /**
@@ -10,10 +10,9 @@ import type { CommerceProvider } from "./types";
 export const peptidesBaliCartProvider: CommerceProvider = {
   id: "peptides-bali-cart",
   getProductAction(product) {
-    const checkoutId = getCheckoutId(product);
-    if (checkoutId === null || product.status === "unavailable") {
+    if (getCheckoutOptions(product).length === 0 || product.status === "unavailable") {
       return enquiryOnlyProvider.getProductAction(product);
     }
-    return { kind: "cart", checkoutId };
+    return { kind: "cart" };
   },
 };

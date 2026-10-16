@@ -207,7 +207,11 @@ The client asked for three single vial options (HGH 24 IU, HGH 36 IU, HGH Somatr
 - **Catalogue:** 2 HGH boxes, 3 single vials, 5 pens. The §9 box mapping (vials
   5708 / 10062 / 5709) was replaced, because the 24 IU and 36 IU vials are now their own
   products. The current mapping is in README §17. Box and vial mappings were confirmed by the
-  project team on 16 October 2026; the pens still assume the *disposable pen* variation.
+  project team on 16 October 2026. All 15 pen variations are sold: five pen products (one
+  per strength), each with a pen-type choice — disposable pen, reusable pen or cartridge —
+  carrying its own variation ID, price and stock. Every pen type uses the disposable pen photo
+  of the same strength (the destination's reusable pen and cartridge images are generic
+  infographics showing other peptides).
 - **New destination product:** 10304 "HGH Somatropin Bali & Indonesia" (100 IU: 10305,
   Rp 4,000,000; 180 IU: 10306, Rp 6,500,000), both "available on backorder" on that date.
 - **Prices:** shown on cards, product pages and in the cart (line totals and subtotal).
@@ -217,4 +221,7 @@ The client asked for three single vial options (HGH 24 IU, HGH 36 IU, HGH Somatr
   labels in these photos read "Research use only / Not for human consumption" or "Research
   peptide" — the §3.1 inconsistency is now visible on HGH Bali itself.
 - Verified on 16 October 2026: a cart with 10305 × 1 and 10066 × 1 opened the destination
-  checkout with both items and a subtotal of Rp 11,000,000, matching HGH Bali.
+  checkout with both items and a subtotal of Rp 11,000,000, matching HGH Bali; a cart with
+  10305 × 1, 9988 (cartridge) × 2 and 9986 (reusable pen) × 1 arrived with the right pen
+  types and a subtotal of Rp 9,100,000. The destination adds a 5% payment adjustment for
+  some payment methods, which HGH Bali does not show.

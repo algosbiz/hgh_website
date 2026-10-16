@@ -342,9 +342,9 @@ export const products: Product[] = [
   },
 
   // ---------------------------------------------------------------------------
-  // PENS (5) — HGH Somatropin (`hgh-somatropin`), disposable pen variations.
-  // Reusable pen and cartridge variations also exist on Peptides Bali; the
-  // disposable pen is assumed until the client confirms (mappingConfirmed).
+  // PENS (5) — HGH Somatropin (`hgh-somatropin`, 9981). One product per
+  // strength; the pen type is chosen on the product page (`variants`).
+  // The disposable pen photo is used for every pen type.
   // ---------------------------------------------------------------------------
   {
     id: "pen-10iu",
@@ -352,9 +352,10 @@ export const products: Product[] = [
     name: "HGH Somatropin Pen 10 IU",
     category: "pens",
     status: "draft",
-    shortDescription: "Atlas Longevity prefilled disposable HGH Somatropin pen, 10 IU.",
+    shortDescription:
+      "HGH Somatropin 10 IU as a prefilled disposable pen, a reusable pen or a replacement cartridge.",
     description: [
-      "A prefilled, disposable HGH Somatropin pen labelled 10 IU, supplied as an Atlas Longevity pen kit.",
+      "HGH Somatropin labelled 10 IU from Atlas Longevity, available in three pen types: a prefilled disposable pen, a reusable pen, or a replacement cartridge for the Atlas Longevity reusable pen. Choose the pen type above; each has its own price.",
       "Pack contents and supporting documentation are being confirmed and will only be published once verified.",
     ],
     images: [
@@ -367,13 +368,12 @@ export const products: Product[] = [
     ],
     specifications: [
       { label: "Active ingredient", value: "Somatropin (HGH)" },
-      { label: "Labelled strength", value: "10 IU per pen" },
-      { label: "Pen type", value: "Prefilled, disposable" },
-      { label: "Total content", value: "10 IU" },
+      { label: "Labelled strength", value: "10 IU" },
+      { label: "Pen type", value: "Disposable pen, reusable pen or cartridge" },
       { label: "Pens per pack", value: null },
     ],
     packaging: [
-      { label: "Outer packaging", value: "Atlas Longevity pen kit box" },
+      { label: "Outer packaging", value: "Atlas Longevity pen kit box (disposable pen)" },
       { label: "Pack contents", value: null },
       { label: "Batch & expiry labelling", value: null },
       { label: "Storage instructions", value: null },
@@ -394,17 +394,40 @@ export const products: Product[] = [
       },
     ],
     faqs: [],
-    price: { amount: 1_800_000, currency: "IDR", approvedForDisplay: true },
+    price: null,
     commerce: {
       destination: "peptides-bali",
       productId: 9981,
-      variationId: 9984,
-      mappingConfirmed: false,
+      variationId: null,
+      mappingConfirmed: true,
+    },
+    variants: {
+      label: "Pen type",
+      options: [
+        {
+          id: "disposable",
+          label: "Disposable pen",
+          price: { amount: 1_800_000, currency: "IDR", approvedForDisplay: true },
+          variationId: 9984,
+        },
+        {
+          id: "reusable",
+          label: "Reusable pen",
+          price: { amount: 2_100_000, currency: "IDR", approvedForDisplay: true },
+          variationId: 9986,
+        },
+        {
+          id: "cartridge",
+          label: "Cartridge",
+          price: { amount: 1_500_000, currency: "IDR", approvedForDisplay: true },
+          variationId: 9988,
+        },
+      ],
     },
     seo: {
       title: "HGH Somatropin Pen 10 IU — Product Information",
       description:
-        "Prefilled HGH Somatropin pen, 10 IU, in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and price.",
+        "HGH Somatropin 10 IU as a disposable pen, reusable pen or cartridge in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and prices.",
     },
   },
   {
@@ -413,9 +436,10 @@ export const products: Product[] = [
     name: "HGH Somatropin Pen 24 IU",
     category: "pens",
     status: "draft",
-    shortDescription: "Atlas Longevity prefilled disposable HGH Somatropin pen, 24 IU.",
+    shortDescription:
+      "HGH Somatropin 24 IU as a prefilled disposable pen, a reusable pen or a replacement cartridge.",
     description: [
-      "A prefilled, disposable HGH Somatropin pen labelled 24 IU, supplied as an Atlas Longevity pen kit.",
+      "HGH Somatropin labelled 24 IU from Atlas Longevity, available in three pen types: a prefilled disposable pen, a reusable pen, or a replacement cartridge for the Atlas Longevity reusable pen. Choose the pen type above; each has its own price.",
       "Pack contents and supporting documentation are being confirmed and will only be published once verified.",
     ],
     images: [
@@ -428,13 +452,12 @@ export const products: Product[] = [
     ],
     specifications: [
       { label: "Active ingredient", value: "Somatropin (HGH)" },
-      { label: "Labelled strength", value: "24 IU per pen" },
-      { label: "Pen type", value: "Prefilled, disposable" },
-      { label: "Total content", value: "24 IU" },
+      { label: "Labelled strength", value: "24 IU" },
+      { label: "Pen type", value: "Disposable pen, reusable pen or cartridge" },
       { label: "Pens per pack", value: null },
     ],
     packaging: [
-      { label: "Outer packaging", value: "Atlas Longevity pen kit box" },
+      { label: "Outer packaging", value: "Atlas Longevity pen kit box (disposable pen)" },
       { label: "Pack contents", value: null },
       { label: "Batch & expiry labelling", value: null },
       { label: "Storage instructions", value: null },
@@ -455,17 +478,40 @@ export const products: Product[] = [
       },
     ],
     faqs: [],
-    price: { amount: 2_200_000, currency: "IDR", approvedForDisplay: true },
+    price: null,
     commerce: {
       destination: "peptides-bali",
       productId: 9981,
-      variationId: 10064,
-      mappingConfirmed: false,
+      variationId: null,
+      mappingConfirmed: true,
+    },
+    variants: {
+      label: "Pen type",
+      options: [
+        {
+          id: "disposable",
+          label: "Disposable pen",
+          price: { amount: 2_200_000, currency: "IDR", approvedForDisplay: true },
+          variationId: 10064,
+        },
+        {
+          id: "reusable",
+          label: "Reusable pen",
+          price: { amount: 2_500_000, currency: "IDR", approvedForDisplay: true },
+          variationId: 10067,
+        },
+        {
+          id: "cartridge",
+          label: "Cartridge",
+          price: { amount: 1_900_000, currency: "IDR", approvedForDisplay: true },
+          variationId: 10070,
+        },
+      ],
     },
     seo: {
       title: "HGH Somatropin Pen 24 IU — Product Information",
       description:
-        "Prefilled HGH Somatropin pen, 24 IU, in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and price.",
+        "HGH Somatropin 24 IU as a disposable pen, reusable pen or cartridge in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and prices.",
     },
   },
   {
@@ -474,9 +520,10 @@ export const products: Product[] = [
     name: "HGH Somatropin Pen 36 IU",
     category: "pens",
     status: "draft",
-    shortDescription: "Atlas Longevity prefilled disposable HGH Somatropin pen, 36 IU.",
+    shortDescription:
+      "HGH Somatropin 36 IU as a prefilled disposable pen, a reusable pen or a replacement cartridge.",
     description: [
-      "A prefilled, disposable HGH Somatropin pen labelled 36 IU, supplied as an Atlas Longevity pen kit.",
+      "HGH Somatropin labelled 36 IU from Atlas Longevity, available in three pen types: a prefilled disposable pen, a reusable pen, or a replacement cartridge for the Atlas Longevity reusable pen. Choose the pen type above; each has its own price.",
       "Pack contents and supporting documentation are being confirmed and will only be published once verified.",
     ],
     images: [
@@ -489,13 +536,12 @@ export const products: Product[] = [
     ],
     specifications: [
       { label: "Active ingredient", value: "Somatropin (HGH)" },
-      { label: "Labelled strength", value: "36 IU per pen" },
-      { label: "Pen type", value: "Prefilled, disposable" },
-      { label: "Total content", value: "36 IU" },
+      { label: "Labelled strength", value: "36 IU" },
+      { label: "Pen type", value: "Disposable pen, reusable pen or cartridge" },
       { label: "Pens per pack", value: null },
     ],
     packaging: [
-      { label: "Outer packaging", value: "Atlas Longevity pen kit box" },
+      { label: "Outer packaging", value: "Atlas Longevity pen kit box (disposable pen)" },
       { label: "Pack contents", value: null },
       { label: "Batch & expiry labelling", value: null },
       { label: "Storage instructions", value: null },
@@ -516,17 +562,40 @@ export const products: Product[] = [
       },
     ],
     faqs: [],
-    price: { amount: 2_800_000, currency: "IDR", approvedForDisplay: true },
+    price: null,
     commerce: {
       destination: "peptides-bali",
       productId: 9981,
-      variationId: 9985,
-      mappingConfirmed: false,
+      variationId: null,
+      mappingConfirmed: true,
+    },
+    variants: {
+      label: "Pen type",
+      options: [
+        {
+          id: "disposable",
+          label: "Disposable pen",
+          price: { amount: 2_800_000, currency: "IDR", approvedForDisplay: true },
+          variationId: 9985,
+        },
+        {
+          id: "reusable",
+          label: "Reusable pen",
+          price: { amount: 3_100_000, currency: "IDR", approvedForDisplay: true },
+          variationId: 9987,
+        },
+        {
+          id: "cartridge",
+          label: "Cartridge",
+          price: { amount: 2_500_000, currency: "IDR", approvedForDisplay: true },
+          variationId: 9989,
+        },
+      ],
     },
     seo: {
       title: "HGH Somatropin Pen 36 IU — Product Information",
       description:
-        "Prefilled HGH Somatropin pen, 36 IU, in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and price.",
+        "HGH Somatropin 36 IU as a disposable pen, reusable pen or cartridge in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and prices.",
     },
   },
   {
@@ -535,9 +604,10 @@ export const products: Product[] = [
     name: "HGH Somatropin Pen 72 IU",
     category: "pens",
     status: "draft",
-    shortDescription: "Atlas Longevity prefilled disposable HGH Somatropin pen, 72 IU.",
+    shortDescription:
+      "HGH Somatropin 72 IU as a prefilled disposable pen, a reusable pen or a replacement cartridge.",
     description: [
-      "A prefilled, disposable HGH Somatropin pen labelled 72 IU, supplied as an Atlas Longevity pen kit.",
+      "HGH Somatropin labelled 72 IU from Atlas Longevity, available in three pen types: a prefilled disposable pen, a reusable pen, or a replacement cartridge for the Atlas Longevity reusable pen. Choose the pen type above; each has its own price.",
       "Pack contents and supporting documentation are being confirmed and will only be published once verified.",
     ],
     images: [
@@ -550,13 +620,12 @@ export const products: Product[] = [
     ],
     specifications: [
       { label: "Active ingredient", value: "Somatropin (HGH)" },
-      { label: "Labelled strength", value: "72 IU per pen" },
-      { label: "Pen type", value: "Prefilled, disposable" },
-      { label: "Total content", value: "72 IU" },
+      { label: "Labelled strength", value: "72 IU" },
+      { label: "Pen type", value: "Disposable pen, reusable pen or cartridge" },
       { label: "Pens per pack", value: null },
     ],
     packaging: [
-      { label: "Outer packaging", value: "Atlas Longevity pen kit box" },
+      { label: "Outer packaging", value: "Atlas Longevity pen kit box (disposable pen)" },
       { label: "Pack contents", value: null },
       { label: "Batch & expiry labelling", value: null },
       { label: "Storage instructions", value: null },
@@ -577,17 +646,40 @@ export const products: Product[] = [
       },
     ],
     faqs: [],
-    price: { amount: 6_000_000, currency: "IDR", approvedForDisplay: true },
+    price: null,
     commerce: {
       destination: "peptides-bali",
       productId: 9981,
-      variationId: 10065,
-      mappingConfirmed: false,
+      variationId: null,
+      mappingConfirmed: true,
+    },
+    variants: {
+      label: "Pen type",
+      options: [
+        {
+          id: "disposable",
+          label: "Disposable pen",
+          price: { amount: 6_000_000, currency: "IDR", approvedForDisplay: true },
+          variationId: 10065,
+        },
+        {
+          id: "reusable",
+          label: "Reusable pen",
+          price: { amount: 6_300_000, currency: "IDR", approvedForDisplay: true },
+          variationId: 10068,
+        },
+        {
+          id: "cartridge",
+          label: "Cartridge",
+          price: { amount: 5_700_000, currency: "IDR", approvedForDisplay: true },
+          variationId: 10071,
+        },
+      ],
     },
     seo: {
       title: "HGH Somatropin Pen 72 IU — Product Information",
       description:
-        "Prefilled HGH Somatropin pen, 72 IU, in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and price.",
+        "HGH Somatropin 72 IU as a disposable pen, reusable pen or cartridge in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and prices.",
     },
   },
   {
@@ -596,9 +688,10 @@ export const products: Product[] = [
     name: "HGH Somatropin Pen 108 IU",
     category: "pens",
     status: "draft",
-    shortDescription: "Atlas Longevity prefilled disposable HGH Somatropin pen, 108 IU.",
+    shortDescription:
+      "HGH Somatropin 108 IU as a prefilled disposable pen, a reusable pen or a replacement cartridge.",
     description: [
-      "A prefilled, disposable HGH Somatropin pen labelled 108 IU, supplied as an Atlas Longevity pen kit.",
+      "HGH Somatropin labelled 108 IU from Atlas Longevity, available in three pen types: a prefilled disposable pen, a reusable pen, or a replacement cartridge for the Atlas Longevity reusable pen. Choose the pen type above; each has its own price.",
       "Pack contents and supporting documentation are being confirmed and will only be published once verified.",
     ],
     images: [
@@ -611,13 +704,12 @@ export const products: Product[] = [
     ],
     specifications: [
       { label: "Active ingredient", value: "Somatropin (HGH)" },
-      { label: "Labelled strength", value: "108 IU per pen" },
-      { label: "Pen type", value: "Prefilled, disposable" },
-      { label: "Total content", value: "108 IU" },
+      { label: "Labelled strength", value: "108 IU" },
+      { label: "Pen type", value: "Disposable pen, reusable pen or cartridge" },
       { label: "Pens per pack", value: null },
     ],
     packaging: [
-      { label: "Outer packaging", value: "Atlas Longevity pen kit box" },
+      { label: "Outer packaging", value: "Atlas Longevity pen kit box (disposable pen)" },
       { label: "Pack contents", value: null },
       { label: "Batch & expiry labelling", value: null },
       { label: "Storage instructions", value: null },
@@ -638,17 +730,40 @@ export const products: Product[] = [
       },
     ],
     faqs: [],
-    price: { amount: 7_000_000, currency: "IDR", approvedForDisplay: true },
+    price: null,
     commerce: {
       destination: "peptides-bali",
       productId: 9981,
-      variationId: 10066,
-      mappingConfirmed: false,
+      variationId: null,
+      mappingConfirmed: true,
+    },
+    variants: {
+      label: "Pen type",
+      options: [
+        {
+          id: "disposable",
+          label: "Disposable pen",
+          price: { amount: 7_000_000, currency: "IDR", approvedForDisplay: true },
+          variationId: 10066,
+        },
+        {
+          id: "reusable",
+          label: "Reusable pen",
+          price: { amount: 7_300_000, currency: "IDR", approvedForDisplay: true },
+          variationId: 10069,
+        },
+        {
+          id: "cartridge",
+          label: "Cartridge",
+          price: { amount: 6_700_000, currency: "IDR", approvedForDisplay: true },
+          variationId: 10072,
+        },
+      ],
     },
     seo: {
       title: "HGH Somatropin Pen 108 IU — Product Information",
       description:
-        "Prefilled HGH Somatropin pen, 108 IU, in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and price.",
+        "HGH Somatropin 108 IU as a disposable pen, reusable pen or cartridge in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and prices.",
     },
   },
 ];

@@ -5,8 +5,9 @@ import { useCart } from "./CartProvider";
 
 /**
  * A product's price: the live Peptides Bali price for products sold through
- * the cart, otherwise `fallback` (the approved price from `products.ts`).
- * Renders nothing when there is no price to show.
+ * the cart ("From …" when its variants have different prices), otherwise
+ * `fallback` (the approved price from `products.ts`). Renders nothing when
+ * there is no price to show.
  */
 export function ProductPrice({
   productId,
@@ -17,10 +18,22 @@ export function ProductPrice({
   fallback: number | null;
   className?: string;
 }) {
-  const { catalogue } = useCart();
-  const item = catalogue.get(productId);
-  const amount = item ? item.price : fallback;
-  if (amount === null) return null;
+  const { productItems } = useCart();
+  const items = productItems.get(productId);
+  const amounts = items
+    ? items.flatMap((item) => (item.price === null ? [] : [item.price]))
+    : fallback === null
+      ? []
+      : [fallback];
+  if (amounts.length === 0) return null;
 
-  return <p className={className}>{formatPrice(amount)}</p>;
+  const lowest = Math.min(...amounts);
+  const varies = amounts.some((amount) => amount !== lowest);
+
+  return (
+    <p className={className}>
+      {varies ? <span className="mr-1.5 font-sans text-sm text-muted">From</span> : null}
+      {formatPrice(lowest)}
+    </p>
+  );
 }
