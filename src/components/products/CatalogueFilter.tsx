@@ -24,6 +24,7 @@ interface CatalogueFilterProps {
 const filterLabels: Record<Filter, string> = {
   all: "All products",
   "hgh-boxes": categories["hgh-boxes"].name,
+  "single-vials": categories["single-vials"].name,
   pens: categories.pens.name,
 };
 

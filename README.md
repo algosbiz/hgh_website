@@ -79,6 +79,7 @@ src/
 │   ├── products/
 │   │   ├── page.tsx        # /products/
 │   │   ├── hgh-boxes/      # /products/hgh-boxes/
+│   │   ├── single-vials/   # /products/single-vials/
 │   │   ├── pens/           # /products/pens/
 │   │   └── [slug]/         # /products/<slug>/  (halaman detail produk)
 │   ├── testing/  about-hgh/  delivery/  faq/  contact/
@@ -97,8 +98,8 @@ src/
 │   └── ui/                 # Tombol, Container, Accordion, judul section
 │
 ├── data/                   # ← SEMUA KONTEN YANG SERING DIUBAH ADA DI SINI
-│   ├── products.ts         # 8 produk
-│   ├── categories.ts       # Kategori (HGH Boxes, Pens)
+│   ├── products.ts         # 10 produk
+│   ├── categories.ts       # Kategori (HGH Boxes, Single Vials, Pens)
 │   ├── testing.ts          # Data batch testing / sertifikat
 │   ├── delivery.ts         # Area & biaya pengiriman
 │   ├── faqs.ts             # FAQ
@@ -107,7 +108,7 @@ src/
 │
 ├── lib/
 │   ├── products.ts         # Fungsi untuk mengambil data produk
-│   ├── commerce/           # Checkout ke Peptides Bali + stok (lihat bagian 17)
+│   ├── commerce/           # Checkout ke Peptides Bali + stok & harga (lihat bagian 17)
 │   ├── cart-store.ts       # Isi keranjang (disimpan di browser)
 │   ├── enquiry.ts          # Pemrosesan formulir di server
 │   ├── seo.ts  analytics.ts  whatsapp.ts
@@ -129,10 +130,10 @@ Semua produk ada di **`src/data/products.ts`**. Setiap produk adalah satu blok `
 
 ```ts
 {
-  id: "hgh-box-1",                 // ID internal unik — jangan diubah setelah launch
-  slug: "hgh-box-option-1",        // URL: /products/hgh-box-option-1/
-  name: "HGH Box Option 1",        // Nama produk
-  category: "hgh-boxes",           // "hgh-boxes" atau "pens"
+  id: "vial-24iu",                 // ID internal unik — jangan diubah setelah launch
+  slug: "hgh-24iu-vial",           // URL: /products/hgh-24iu-vial/
+  name: "HGH 24 IU Vial",          // Nama produk
+  category: "single-vials",        // "hgh-boxes", "single-vials" atau "pens"
   status: "draft",                 // lihat bagian 6
   shortDescription: "…",           // Ringkasan (kartu produk)
   description: ["Paragraf 1", "Paragraf 2"],
@@ -145,7 +146,7 @@ Semua produk ada di **`src/data/products.ts`**. Setiap produk adalah satu blok `
   manufacturer: { name: null, details: null },
   documents: [ … ],                // dokumen (COA, dll.)
   faqs: [],                        // FAQ khusus produk (opsional)
-  price: null,                     // harga — hanya tampil jika disetujui
+  price: { … },                    // harga (lihat di bawah)
   commerce: { … },                 // ID produk di Peptides Bali (lihat bagian 17)
   seo: { title: "…", description: "…" },
 }
@@ -158,18 +159,23 @@ Semua produk ada di **`src/data/products.ts`**. Setiap produk adalah satu blok `
 - **Tiga spesifikasi pertama** tampil di kartu produk; semua spesifikasi tampil di halaman detail.
 - Jika `slug` diubah setelah website live, tambahkan redirect di `next.config.ts`.
 
-**Harga:** harga hanya tampil jika `approvedForDisplay: true` (setelah ada persetujuan hukum):
+**Harga:** harga hanya tampil jika `approvedForDisplay: true` (`price: null` = tanpa harga):
 
 ```ts
-price: { amount: 5500000, currency: "IDR", approvedForDisplay: true },
+price: { amount: 1_500_000, currency: "IDR", approvedForDisplay: true },
 ```
+
+Untuk produk yang dijual lewat keranjang, website menampilkan **harga live dari Peptides
+Bali** (dibaca tiap jam, lihat bagian 17), jadi harga selalu sama dengan peptidesbali.online.
+`amount` hanya dipakai jika Peptides Bali tidak bisa diakses — tetap samakan dengan harga
+di sana.
 
 **Dokumen produk:** tautan hanya muncul jika `status: "available"` dan `href` diisi:
 
 ```ts
 documents: [
   {
-    id: "hgh-box-1-coa",
+    id: "vial-24iu-coa",
     title: "Certificate of Analysis",
     type: "certificate-of-analysis",
     status: "available",
@@ -186,20 +192,20 @@ File PDF disimpan di `public/documents/` (buat foldernya jika belum ada).
 ## 4. Mengubah gambar produk
 
 1. Simpan foto di **`public/images/products/<slug>/`**, contoh:
-   `public/images/products/hgh-box-option-1/main.jpg`
+   `public/images/products/hgh-24iu-vial/main.webp`
 2. Tambahkan ke `images` di `src/data/products.ts`:
 
 ```ts
 images: [
   {
-    src: "/images/products/hgh-box-option-1/main.jpg",
-    alt: "HGH Box Option 1 — outer box, front view",
-    width: 1200,
-    height: 1200,
+    src: "/images/products/hgh-24iu-vial/main.webp",
+    alt: "Atlas Longevity HGH vial labelled 24 IU",
+    width: 1254,
+    height: 1254,
   },
   {
-    src: "/images/products/hgh-box-option-1/vial.jpg",
-    alt: "HGH Box Option 1 — single vial label",
+    src: "/images/products/hgh-24iu-vial/label.webp",
+    alt: "HGH 24 IU vial — label close-up",
     width: 1200,
     height: 1200,
   },
@@ -214,6 +220,11 @@ images: [
   mengecilkan dan mengonversi gambar.
 - **Hanya gunakan foto produk asli yang disetujui klien.** Jangan memakai foto klinik
   pihak ketiga atau gambar AI sebagai foto produk.
+- Foto produk saat ini diambil dari halaman produk yang sama di peptidesbali.online
+  (16 Oktober 2026), dikonversi ke WebP. Foto tampil di atas latar putih.
+
+> **Perhatian:** label vial Atlas Longevity di foto bertuliskan *"Research use only / Not
+> for human consumption"* / *"Research peptide"* — lihat `docs/commerce-feasibility.md` §3.
 
 ### Gambar ilustrasi (sementara)
 
@@ -224,6 +235,7 @@ kategori, dengan label **"Illustrative image"**:
 | ------------------------------------ | --------------------------------------- |
 | `hero-vials-and-pen.jpg`             | Tidak dipakai lagi (cadangan hero)      |
 | `hgh-boxes-wide.jpg` / `-square.jpg` | Kartu kategori & produk HGH Boxes       |
+| `single-vials-wide.jpg` / `-square.jpg` | Kartu kategori & produk Single Vials (satu vial dari render HGH Boxes) |
 | `pens-wide.jpg` / `-square.jpg`      | Kartu kategori & produk Pens            |
 
 Render ini sengaja **tanpa merek, tanpa label, dan tanpa angka dosis**: vial kaca berisi
@@ -272,13 +284,16 @@ Halaman detail, kartu katalog, filter, jumlah per kategori, sitemap dan pilihan 
 formulir enquiry **terbarui otomatis**.
 
 Yang perlu diubah manual: deskripsi singkat jumlah produk di menu dropdown
-(`"Three boxed options"`, `"Five pen options"`) pada `src/data/site.ts`.
+(`"The full catalogue of ten options"`, `"Two boxed options"`, `"Three single vial options"`,
+`"Five pen options"`) pada `src/data/site.ts`, dan jawaban FAQ "What products does HGH Bali
+list?" di `src/data/faqs.ts`.
 
 **Menambah kategori baru** memerlukan perubahan kode kecil: tambahkan nilai baru di
-`ProductCategory` (`src/types/product.ts`), di `categories` dan `categoryOrder`
-(`src/data/categories.ts`), buat halaman baru di `src/app/products/<kategori>/page.tsx`
-(salin dari `pens/page.tsx`), dan tambahkan ilustrasinya di
-`src/components/products/ProductIllustration.tsx`.
+`ProductCategory` (`src/types/product.ts`), di `categories` (termasuk `illustration`) dan
+`categoryOrder` (`src/data/categories.ts`), di `filterLabels`
+(`src/components/products/CatalogueFilter.tsx`), buat halaman baru di
+`src/app/products/<kategori>/page.tsx` (salin dari `pens/page.tsx`), lalu tambahkan
+tautannya di `src/data/site.ts`, `src/components/layout/Footer.tsx` dan `src/app/sitemap.ts`.
 
 ---
 
@@ -539,28 +554,34 @@ commerce: {
 },
 ```
 
-Pemetaan saat ini **sementara** (tebakan dari katalog Peptides Bali) dan **harus
-dikonfirmasi klien**:
+Pemetaan saat ini (16 Oktober 2026):
 
-| Produk HGH Bali | Peptides Bali                                 | ID variasi |
-| --------------- | --------------------------------------------- | ---------- |
-| HGH Box Option 1–3 | HGH (`hgh-10iu-bali`) — 10 / 24 / 36 IU    | 5708 / 10062 / 5709 |
-| Pen Option 1–5  | HGH Somatropin, disposable pen — 10 / 24 / 36 / 72 / 108 IU | 9984 / 10064 / 9985 / 10065 / 10066 |
+| Produk HGH Bali | Peptides Bali (ID produk) | ID variasi |
+| --------------- | ------------------------- | ---------- |
+| Somatropin HGH 191aa 100 IU (box) | Somatropin HGH 191aa (`hgh-somatropin-bali`, 1252) | — (tanpa variasi) |
+| HGH Somatropin 180 IU Box | HGH Somatropin Bali & Indonesia (`hgh-somatropin-bali-indonesia`, 10304) — 180 IU | 10306 |
+| HGH 24 IU Vial / HGH 36 IU Vial | HGH (`hgh-10iu-bali`, 1217) — 24 / 36 IU | 10062 / 5709 |
+| HGH Somatropin 100 IU (Single Vials) | HGH Somatropin Bali & Indonesia (10304) — 100 IU | 10305 |
+| HGH Somatropin Pen 10 / 24 / 36 / 72 / 108 IU | HGH Somatropin (`hgh-somatropin`, 9981), disposable pen | 9984 / 10064 / 9985 / 10065 / 10066 |
+
+Pen masih `mappingConfirmed: false`: Peptides Bali juga punya variasi *reusable pen* dan
+*cartridge*; yang dipakai adalah *disposable pen* sampai klien mengonfirmasi.
 
 Cara mencari ID: buka
 `https://peptidesbali.online/wp-json/wc/store/v1/products/<ID produk>` — daftar
 `variations` berisi ID tiap variasi. Hapus `productId`/`variationId` (isi `null`) jika
 produk tidak dijual online; produk itu otomatis kembali ke tombol enquiry.
 
-**Stok** dibaca dari Store API Peptides Bali dan diperbarui tiap jam
+**Stok dan harga** dibaca dari Store API Peptides Bali dan diperbarui tiap jam
 (`src/lib/commerce/stock.ts`). Produk yang habis tampil **Out of stock** dan tidak bisa
-ditambahkan. Jika Peptides Bali tidak bisa diakses, produk tetap bisa ditambahkan dan
-WooCommerce yang mengecek stok saat checkout.
+ditambahkan. Jika Peptides Bali tidak bisa diakses, produk tetap bisa ditambahkan
+(WooCommerce yang mengecek stok saat checkout) dan harga dari `products.ts` yang tampil.
 
 **Lainnya:**
 
 - Isi keranjang disimpan di browser pengunjung (`localStorage`), maksimal 10 per produk.
-- Harga tidak ditampilkan di HGH Bali; harga, ongkir dan pembayaran tampil di Peptides Bali.
+- Harga tampil di kartu produk, halaman produk dan keranjang (harga per item dan subtotal).
+  Ongkir ditambahkan dan pembayaran diselesaikan di Peptides Bali.
 - Event GA4: `add_to_cart`, `begin_checkout` (tanpa data pribadi).
 - **Mematikan keranjang:** di `src/lib/commerce/index.ts` ganti `peptidesBaliCartProvider`
   dengan `enquiryOnlyProvider`.

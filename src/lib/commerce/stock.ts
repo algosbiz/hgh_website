@@ -2,15 +2,34 @@ import { cacheLife } from "next/cache";
 import { products } from "@/data/products";
 import { getCheckoutId, peptidesBali } from "./peptides-bali";
 
-/** In-stock flag per checkout ID. A missing ID means "unknown". */
-export type StockMap = Record<number, boolean>;
+/** What Peptides Bali reports for one checkout ID. */
+export interface DestinationProduct {
+  inStock: boolean;
+  /** Current price in IDR, or `null` when it could not be read. */
+  price: number | null;
+}
+
+/** Stock and price per checkout ID. A missing ID means "unknown". */
+export type DestinationMap = Record<number, DestinationProduct>;
 
 interface StoreApiProduct {
   id: number;
   is_in_stock: boolean;
+  prices?: {
+    /** In minor units, e.g. "150000000" with `currency_minor_unit: 2`. */
+    price: string;
+    currency_code: string;
+    currency_minor_unit: number;
+  };
 }
 
-async function fetchStock(ids: number[], type?: "variation"): Promise<StoreApiProduct[]> {
+function toPrice(prices: StoreApiProduct["prices"]): number | null {
+  if (!prices || prices.currency_code !== "IDR") return null;
+  const amount = Number(prices.price) / 10 ** prices.currency_minor_unit;
+  return Number.isFinite(amount) && amount > 0 ? amount : null;
+}
+
+async function fetchProducts(ids: number[], type?: "variation"): Promise<StoreApiProduct[]> {
   if (ids.length === 0) return [];
   const url = new URL("/wp-json/wc/store/v1/products", peptidesBali.baseUrl);
   url.searchParams.set("include", ids.join(","));
@@ -23,12 +42,13 @@ async function fetchStock(ids: number[], type?: "variation"): Promise<StoreApiPr
 }
 
 /**
- * Stock of every mapped product on Peptides Bali, read from the public
- * WooCommerce Store API and refreshed hourly. If the store cannot be
- * reached, stock is unknown and products stay available to add to the cart
- * (WooCommerce still checks stock at checkout).
+ * Stock and price of every mapped product on Peptides Bali, read from the
+ * public WooCommerce Store API and refreshed hourly. If the store cannot be
+ * reached, both are unknown: products stay available to add to the cart
+ * (WooCommerce still checks stock at checkout) and the price from
+ * `products.ts` is shown.
  */
-export async function getDestinationStock(): Promise<StockMap> {
+export async function getDestinationProducts(): Promise<DestinationMap> {
   "use cache";
   cacheLife("hours");
 
@@ -43,14 +63,16 @@ export async function getDestinationStock(): Promise<StockMap> {
 
   try {
     const results = await Promise.all([
-      fetchStock(variationIds, "variation"),
-      fetchStock(productIds),
+      fetchProducts(variationIds, "variation"),
+      fetchProducts(productIds),
     ]);
-    const stock: StockMap = {};
-    for (const item of results.flat()) stock[item.id] = item.is_in_stock;
-    return stock;
+    const destination: DestinationMap = {};
+    for (const item of results.flat()) {
+      destination[item.id] = { inStock: item.is_in_stock, price: toPrice(item.prices) };
+    }
+    return destination;
   } catch (error) {
-    console.warn("[commerce] Could not read Peptides Bali stock:", error);
+    console.warn("[commerce] Could not read Peptides Bali stock and prices:", error);
     return {};
   }
 }

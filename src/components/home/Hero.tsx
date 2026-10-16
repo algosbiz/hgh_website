@@ -44,7 +44,7 @@ export function Hero({ productCount }: HeroProps) {
             </em>
           </h1>
           <p className="mt-6 max-w-xl text-[1.0625rem] leading-relaxed text-muted sm:text-lg">
-            A clear catalogue of HGH boxes and pens from Atlas Longevity, with
+            A clear catalogue of HGH boxes, single vials and pens from Atlas Longevity, with
             labelled specifications, packaging details and batch testing
             documentation published as each record is confirmed.
           </p>

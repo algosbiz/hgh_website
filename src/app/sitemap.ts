@@ -6,6 +6,7 @@ const staticPages = [
   { path: "/", priority: 1 },
   { path: "/products/", priority: 0.9 },
   { path: "/products/hgh-boxes/", priority: 0.8 },
+  { path: "/products/single-vials/", priority: 0.8 },
   { path: "/products/pens/", priority: 0.8 },
   { path: "/testing/", priority: 0.8 },
   { path: "/about-hgh/", priority: 0.6 },

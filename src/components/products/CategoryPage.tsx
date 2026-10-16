@@ -8,7 +8,7 @@ import { getProductsByCategory, toCatalogueItems } from "@/lib/products";
 import { CategoryNav } from "./CategoryNav";
 import { ProductGrid } from "./ProductGrid";
 
-/** Shared layout for /products/hgh-boxes/ and /products/pens/. */
+/** Shared layout for /products/hgh-boxes/, /products/single-vials/ and /products/pens/. */
 export function CategoryPage({ category }: { category: ProductCategory }) {
   const info = categories[category];
   const products = getProductsByCategory(category);

@@ -8,6 +8,7 @@ import { FaqSection } from "@/components/home/FaqSection";
 import { Hero } from "@/components/home/Hero";
 import { ListedProductSection } from "@/components/home/ListedProductSection";
 import { TestingSection } from "@/components/home/TestingSection";
+import { categoryOrder } from "@/data/categories";
 import { featuredFaqs } from "@/data/faqs";
 import { site } from "@/data/site";
 import { testingRecords } from "@/data/testing";
@@ -34,10 +35,12 @@ export const metadata: Metadata = {
  */
 export default function HomePage() {
   const products = getAllProducts();
-  const counts = {
-    "hgh-boxes": products.filter((p) => p.category === "hgh-boxes").length,
-    pens: products.filter((p) => p.category === "pens").length,
-  };
+  const counts = Object.fromEntries(
+    categoryOrder.map((category) => [
+      category,
+      products.filter((p) => p.category === category).length,
+    ]),
+  ) as Record<(typeof categoryOrder)[number], number>;
   const publishedCertificates = testingRecords.filter(
     (record) => record.status === "completed" && record.certificateUrl,
   ).length;

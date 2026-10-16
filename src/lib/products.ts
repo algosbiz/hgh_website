@@ -3,7 +3,7 @@ import path from "node:path";
 import { categories } from "@/data/categories";
 import { products } from "@/data/products";
 import { getProductAction } from "@/lib/commerce";
-import type { StockMap } from "@/lib/commerce/stock";
+import type { DestinationMap } from "@/lib/commerce/stock";
 import type { CartCatalogueItem } from "@/types/cart";
 import type {
   CatalogueItem,
@@ -59,13 +59,23 @@ export function getProductOptions() {
   }));
 }
 
-/** Products that can be added to the cart, with their Peptides Bali stock. */
-export function getCartCatalogue(stock: StockMap): CartCatalogueItem[] {
+/** The price shown on the website before live prices apply, or `null`. */
+export function getDisplayPrice(product: Product): number | null {
+  return product.price?.approvedForDisplay ? product.price.amount : null;
+}
+
+/**
+ * Products that can be added to the cart, with their Peptides Bali stock and
+ * price. The live price is only used for products whose price may be shown.
+ */
+export function getCartCatalogue(destination: DestinationMap): CartCatalogueItem[] {
   return getAllProducts().flatMap((product) => {
     const action = getProductAction(product);
     if (action.kind !== "cart") return [];
     const category = categories[product.category];
     const image = product.images[0] ?? category.illustration.square;
+    const live = destination[action.checkoutId];
+    const fallbackPrice = getDisplayPrice(product);
     return [
       {
         id: product.id,
@@ -74,7 +84,8 @@ export function getCartCatalogue(stock: StockMap): CartCatalogueItem[] {
         href: `/products/${product.slug}/`,
         image: { src: image.src, alt: image.alt },
         checkoutId: action.checkoutId,
-        inStock: stock[action.checkoutId] ?? null,
+        inStock: live?.inStock ?? null,
+        price: fallbackPrice === null ? null : (live?.price ?? fallbackPrice),
       },
     ];
   });

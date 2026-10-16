@@ -8,13 +8,15 @@ import { buttonClasses } from "@/components/ui/Button";
 import { trackEvent } from "@/lib/analytics";
 import { clearCart, removeFromCart, setCartQuantity } from "@/lib/cart-store";
 import { buildCheckoutUrl, peptidesBali } from "@/lib/commerce/peptides-bali";
+import { formatPrice } from "@/lib/price";
 import { useCart } from "./CartProvider";
 import { QuantityStepper } from "./QuantityStepper";
 
 /**
  * Slide-in cart using the native <dialog> element (focus trap, Escape to
  * close). "Proceed to Checkout" opens the Peptides Bali checkout with every
- * in-stock line already in its cart.
+ * in-stock line already in its cart. The subtotal uses the same prices as
+ * Peptides Bali; delivery is added there.
  */
 export function CartDrawer() {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -27,6 +29,11 @@ export function CartDrawer() {
   }, [openSignal]);
 
   const checkoutLines = lines.filter((line) => line.item.inStock !== false);
+  const checkoutCount = checkoutLines.reduce((total, line) => total + line.quantity, 0);
+  // Only shown when every line has a price.
+  const subtotal = checkoutLines.every((line) => line.item.price !== null)
+    ? checkoutLines.reduce((total, line) => total + (line.item.price ?? 0) * line.quantity, 0)
+    : null;
   const checkoutUrl =
     checkoutLines.length > 0
       ? buildCheckoutUrl(
@@ -68,7 +75,7 @@ export function CartDrawer() {
             </span>
             <p className="mt-5 font-display text-2xl text-ink">Your cart is empty</p>
             <p className="mt-2 text-[0.95rem] leading-relaxed text-muted">
-              Add an HGH box or pen to continue to checkout.
+              Add an HGH box, vial or pen to continue to checkout.
             </p>
             <Link
               href="/products/"
@@ -93,7 +100,7 @@ export function CartDrawer() {
                       alt=""
                       fill
                       sizes="6rem"
-                      className="object-cover"
+                      className="object-contain p-1.5"
                     />
                     <span className="sr-only">{item.name}</span>
                   </Link>
@@ -116,12 +123,18 @@ export function CartDrawer() {
                       </button>
                     </div>
 
-                    <QuantityStepper
-                      value={quantity}
-                      onChange={(value) => setCartQuantity(item.id, value)}
-                      label={item.name}
-                      className="mt-3"
-                    />
+                    <div className="mt-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+                      <QuantityStepper
+                        value={quantity}
+                        onChange={(value) => setCartQuantity(item.id, value)}
+                        label={item.name}
+                      />
+                      {item.price !== null ? (
+                        <p className="font-semibold text-ink tabular-nums">
+                          {formatPrice(item.price * quantity)}
+                        </p>
+                      ) : null}
+                    </div>
 
                     {item.inStock === false ? (
                       <p className="mt-2 text-xs leading-relaxed text-status-danger">
@@ -134,13 +147,27 @@ export function CartDrawer() {
             </ul>
 
             <div className="border-t border-line px-6 py-6 sm:px-7">
-              <div className="flex items-center justify-between text-lg">
-                <span className="font-medium text-ink">Items</span>
-                <span className="font-semibold text-ink tabular-nums">{count}</span>
-              </div>
+              {subtotal !== null && checkoutCount > 0 ? (
+                <div className="flex items-baseline justify-between gap-4 text-lg">
+                  <span className="font-medium text-ink">
+                    Subtotal{" "}
+                    <span className="text-base font-normal text-muted">
+                      ({checkoutCount} {checkoutCount === 1 ? "item" : "items"})
+                    </span>
+                  </span>
+                  <span className="font-display text-2xl text-ink tabular-nums">
+                    {formatPrice(subtotal)}
+                  </span>
+                </div>
+              ) : (
+                <div className="flex items-center justify-between text-lg">
+                  <span className="font-medium text-ink">Items</span>
+                  <span className="font-semibold text-ink tabular-nums">{count}</span>
+                </div>
+              )}
               <p className="mt-3 text-[0.95rem] leading-relaxed text-muted">
-                Checkout continues on {peptidesBali.name} ({peptidesBali.domain}),
-                where prices, delivery and payment are confirmed.
+                Your cart is carried over to {peptidesBali.name} ({peptidesBali.domain}),
+                where delivery is added and payment is completed.
               </p>
 
               {checkoutUrl ? (
@@ -149,7 +176,7 @@ export function CartDrawer() {
                   onClick={() =>
                     trackEvent("begin_checkout", {
                       item_count: checkoutLines.length,
-                      quantity: checkoutLines.reduce((total, line) => total + line.quantity, 0),
+                      quantity: checkoutCount,
                     })
                   }
                   className={buttonClasses("gold", "lg", "mt-6 min-h-14 w-full text-[1.05rem]")}

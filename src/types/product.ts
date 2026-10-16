@@ -3,7 +3,7 @@
  * Product content lives in `src/data/products.ts`.
  */
 
-export type ProductCategory = "hgh-boxes" | "pens";
+export type ProductCategory = "hgh-boxes" | "single-vials" | "pens";
 
 /**
  * Publication/compliance state of a product.
@@ -54,8 +54,9 @@ export interface ProductFaq {
 }
 
 /**
- * Optional price. Only shown when `approvedForDisplay` is true
- * (requires legal/regulatory approval).
+ * Optional price. Only shown when `approvedForDisplay` is true.
+ * For products sold through the cart, the live Peptides Bali price replaces
+ * `amount` whenever the store can be reached (see lib/commerce/stock.ts).
  */
 export interface ProductPrice {
   amount: number;

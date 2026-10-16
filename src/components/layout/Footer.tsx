@@ -8,6 +8,7 @@ import { whatsappLink } from "@/lib/whatsapp";
 const productLinks = [
   { label: "All products", href: "/products/" },
   { label: "HGH Boxes", href: "/products/hgh-boxes/" },
+  { label: "Single Vials", href: "/products/single-vials/" },
   { label: "Pens", href: "/products/pens/" },
 ];
 

@@ -21,10 +21,10 @@ export function CategoryCards({ counts }: CategoryCardsProps) {
           id="categories-title"
           eyebrow="Categories"
           title="Explore our product categories"
-          description="Two presentations, each with its own specifications and documentation. Products are grouped for easier browsing only."
+          description="Three presentations, each with its own specifications and documentation. Products are grouped for easier browsing only."
         />
 
-        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:gap-6">
+        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
           {categoryOrder.map((slug, index) => {
             const category = categories[slug];
             const count = counts[slug];

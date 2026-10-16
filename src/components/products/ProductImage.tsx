@@ -29,15 +29,19 @@ export function ProductImage({
   showIllustrativeLabel = true,
 }: ProductImageProps) {
   if (image) {
+    // Product photos have white backgrounds, so they sit on white.
     return (
-      <Image
-        src={image.src}
-        alt={image.alt}
-        fill
-        sizes={sizes}
-        preload={preload}
-        className={cn("object-contain p-6", className)}
-      />
+      <>
+        <span aria-hidden="true" className="absolute inset-0 bg-paper" />
+        <Image
+          src={image.src}
+          alt={image.alt}
+          fill
+          sizes={sizes}
+          preload={preload}
+          className={cn("object-contain p-6", className)}
+        />
+      </>
     );
   }
 

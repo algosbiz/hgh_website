@@ -196,3 +196,25 @@ On 15 October 2026 only 5708, 9984 and 10066 were in stock.
 prescription/eligibility verification, "research use only" labelling and claims on the
 destination, payment provider rules, delivery fee differences). Enabling the cart was the
 client's decision; it does not resolve these points.
+
+---
+
+## 10. Single vials, prices and product photos (16 October 2026)
+
+The client asked for three single vial options (HGH 24 IU, HGH 36 IU, HGH Somatropin
+100 IU), photos for every product, and prices "same as peptidesbali.online".
+
+- **Catalogue:** 2 HGH boxes, 3 single vials, 5 pens. The §9 box mapping (vials
+  5708 / 10062 / 5709) was replaced, because the 24 IU and 36 IU vials are now their own
+  products. The current mapping is in README §17. Box and vial mappings were confirmed by the
+  project team on 16 October 2026; the pens still assume the *disposable pen* variation.
+- **New destination product:** 10304 "HGH Somatropin Bali & Indonesia" (100 IU: 10305,
+  Rp 4,000,000; 180 IU: 10306, Rp 6,500,000), both "available on backorder" on that date.
+- **Prices:** shown on cards, product pages and in the cart (line totals and subtotal).
+  They are read hourly from the Store API together with stock, so they match the
+  destination; the amount in `products.ts` is only a fallback. Delivery is added at checkout.
+- **Photos:** copied from the matching destination product pages. The Atlas Longevity vial
+  labels in these photos read "Research use only / Not for human consumption" or "Research
+  peptide" — the §3.1 inconsistency is now visible on HGH Bali itself.
+- Verified on 16 October 2026: a cart with 10305 × 1 and 10066 × 1 opened the destination
+  checkout with both items and a subtotal of Rp 11,000,000, matching HGH Bali.

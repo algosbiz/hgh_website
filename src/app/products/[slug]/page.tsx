@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight, FileText, Info, Truck } from "lucide-react";
 import { TrackEvent } from "@/components/analytics/TrackEvent";
 import { TrackedLink } from "@/components/analytics/TrackedLink";
+import { ProductPrice } from "@/components/cart/ProductPrice";
 import { ProductPurchase } from "@/components/cart/ProductPurchase";
 import { EnquiryForm } from "@/components/forms/EnquiryForm";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
@@ -24,6 +25,7 @@ import { peptidesBali } from "@/lib/commerce/peptides-bali";
 import { statusInfo } from "@/lib/product-status";
 import {
   getCatalogueNumber,
+  getDisplayPrice,
   getProductBySlug,
   getProductOptions,
   getRelatedProducts,
@@ -114,7 +116,6 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
   const action = getProductAction(product);
   const related = getRelatedProducts(product);
   const faqs = [...product.faqs, ...productPageFaqs];
-  const showPrice = product.price?.approvedForDisplay === true;
 
   return (
     <>
@@ -161,15 +162,11 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
             <h2 className="sr-only">Key specifications</h2>
             <SpecList specs={product.specifications.slice(0, 4)} className="mt-8" />
 
-            {showPrice && product.price ? (
-              <p className="mt-6 font-display text-3xl text-ink tabular-nums">
-                {new Intl.NumberFormat("en-ID", {
-                  style: "currency",
-                  currency: "IDR",
-                  maximumFractionDigits: 0,
-                }).format(product.price.amount)}
-              </p>
-            ) : null}
+            <ProductPrice
+              productId={product.id}
+              fallback={getDisplayPrice(product)}
+              className="mt-8 font-display text-4xl text-ink tabular-nums"
+            />
 
             {action.kind === "cart" ? (
               <div className="mt-8">
@@ -190,9 +187,10 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
               <Info aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-gold-deep" />
               {action.kind === "cart" ? (
                 <p>
-                  Orders are completed on {peptidesBali.name} ({peptidesBali.domain}),
-                  where prices, payment and delivery are confirmed. Questions
-                  before ordering? <a href="#enquire" className="underline underline-offset-4">Send an enquiry</a>.
+                  Orders are completed on {peptidesBali.name} ({peptidesBali.domain}):
+                  your cart is carried over, and delivery and payment are
+                  confirmed at checkout. Questions before ordering?{" "}
+                  <a href="#enquire" className="underline underline-offset-4">Send an enquiry</a>.
                 </p>
               ) : (
                 <p>

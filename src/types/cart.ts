@@ -10,6 +10,8 @@ export interface CartCatalogueItem {
   checkoutId: number;
   /** `null` when the stock could not be read. */
   inStock: boolean | null;
+  /** Price in IDR — the live Peptides Bali price when available; `null` = not shown. */
+  price: number | null;
 }
 
 /** What is saved in the visitor's browser. */

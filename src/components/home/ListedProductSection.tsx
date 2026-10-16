@@ -34,7 +34,7 @@ export function ListedProductSection() {
               id="listed-product-title"
               eyebrow="Previously listed product"
               title={`${listedProduct.name} ${listedProduct.labelledStrength.replace(" per vial", "")}`}
-              description="Product specifications from the previous HGH Bali listing, kept for reference. They are not assumed to apply to the new catalogue options."
+              description="Product specifications from the previous HGH Bali listing, kept for reference. The Somatropin HGH 191aa 100 IU box in the catalogue carries the same labelled strength and vial count."
             />
             <dl className="mt-8 divide-y divide-line border-y border-line">
               {listedProduct.specifications.map((spec) => (

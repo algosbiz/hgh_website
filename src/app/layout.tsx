@@ -8,7 +8,7 @@ import { Header } from "@/components/layout/Header";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 import { products } from "@/data/products";
 import { site } from "@/data/site";
-import { getDestinationStock } from "@/lib/commerce/stock";
+import { getDestinationProducts } from "@/lib/commerce/stock";
 import { getCartCatalogue } from "@/lib/products";
 import { isIndexingAllowed, siteUrl } from "@/lib/seo";
 import "@/styles/globals.css";
@@ -72,7 +72,7 @@ const organizationJsonLd = {
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
-  const cartCatalogue = getCartCatalogue(await getDestinationStock());
+  const cartCatalogue = getCartCatalogue(await getDestinationProducts());
   const productNames = Object.fromEntries(
     products.map((product) => [`/products/${product.slug}/`, product.name]),
   );

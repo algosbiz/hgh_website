@@ -1,8 +1,8 @@
 /**
  * The Somatropin product described on the previous HGH Bali website.
  *
- * Kept as a factual reference only. It is NOT assumed to match any of the
- * eight new catalogue options in `products.ts`.
+ * Kept as a factual reference. "Somatropin HGH 191aa 100 IU" in
+ * `products.ts` carries the same labelled strength and vial count.
  */
 export const listedProduct = {
   name: "Somatropin",

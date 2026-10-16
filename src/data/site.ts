@@ -8,7 +8,7 @@ export const site = {
   legalName: "Atlas Longevity",
   tagline: "Somatropin HGH product information & enquiries — Bali & Indonesia",
   description:
-    "HGH Bali by Atlas Longevity: product catalogue, labelled specifications, packaging details and batch testing documentation for HGH boxes and pens in Bali and Indonesia.",
+    "HGH Bali by Atlas Longevity: product catalogue, labelled specifications, packaging details and batch testing documentation for HGH boxes, single vials and pens in Bali and Indonesia.",
   defaultUrl: "https://hghbali.com",
   logo: {
     src: "/images/brand/hgh-bali-logo.png",
@@ -63,12 +63,17 @@ export const mainNav: NavItem[] = [
       {
         label: "All products",
         href: "/products/",
-        description: "The full catalogue of eight options",
+        description: "The full catalogue of ten options",
       },
       {
         label: "HGH Boxes",
         href: "/products/hgh-boxes/",
-        description: "Three boxed options",
+        description: "Two boxed options",
+      },
+      {
+        label: "Single Vials",
+        href: "/products/single-vials/",
+        description: "Three single vial options",
       },
       {
         label: "Pens",

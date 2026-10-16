@@ -7,9 +7,9 @@ import { getAllProducts, toCatalogueItems } from "@/lib/products";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata = buildMetadata({
-  title: "Product Catalogue — HGH Boxes & Pens",
+  title: "Product Catalogue — HGH Boxes, Vials & Pens",
   description:
-    "The HGH Bali product catalogue by Atlas Longevity: HGH box and pen options with labelled specifications, packaging details and batch documentation.",
+    "The HGH Bali product catalogue by Atlas Longevity: HGH boxes, single vials and pens with labelled specifications, packaging details, prices and batch documentation.",
   path: "/products/",
 });
 
@@ -22,7 +22,7 @@ export default function ProductsPage() {
         breadcrumbs={[{ label: "Products", href: "/products/" }]}
         eyebrow="Catalogue"
         title="Product catalogue"
-        intro={`${products.length} options across two categories. Every specification is taken from the product label or supporting documentation — anything not yet confirmed is clearly marked.`}
+        intro={`${products.length} options across three categories. Every specification is taken from the product label or supporting documentation — anything not yet confirmed is clearly marked.`}
       />
 
       <section aria-label="Products" className="py-14 sm:py-20">

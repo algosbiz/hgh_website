@@ -2,8 +2,10 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { Product } from "@/types/product";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
+import { ProductPrice } from "@/components/cart/ProductPrice";
 import { categories } from "@/data/categories";
 import { getProductAction } from "@/lib/commerce";
+import { getDisplayPrice } from "@/lib/products";
 import { ProductImage } from "./ProductImage";
 import { SpecList } from "./SpecList";
 import { StatusBadge } from "./StatusBadge";
@@ -15,19 +17,12 @@ interface ProductCardProps {
   headingLevel?: "h2" | "h3";
 }
 
-const priceFormatter = new Intl.NumberFormat("en-ID", {
-  style: "currency",
-  currency: "IDR",
-  maximumFractionDigits: 0,
-});
-
 export function ProductCard({
   product,
   number,
   headingLevel: Heading = "h3",
 }: ProductCardProps) {
   const href = `/products/${product.slug}/`;
-  const showPrice = product.price?.approvedForDisplay === true;
   const action = getProductAction(product);
 
   return (
@@ -72,25 +67,29 @@ export function ProductCard({
           className="mt-5"
         />
 
-        <div className="mt-auto flex items-center justify-between gap-4 pt-6">
-          {action.kind === "cart" ? (
-            // Sits above the card-wide link so it can be clicked.
-            <AddToCartButton productId={product.id} className="relative z-20" />
-          ) : showPrice && product.price ? (
-            <span className="font-display text-lg text-ink tabular-nums">
-              {priceFormatter.format(product.price.amount)}
+        <div className="mt-auto space-y-4 pt-6">
+          <ProductPrice
+            productId={product.id}
+            fallback={getDisplayPrice(product)}
+            className="font-display text-2xl text-ink tabular-nums"
+          />
+
+          <div className="flex items-center justify-between gap-4">
+            {action.kind === "cart" ? (
+              // Sits above the card-wide link so it can be clicked.
+              <AddToCartButton productId={product.id} className="relative z-20" />
+            ) : (
+              <span aria-hidden="true" className="text-sm font-medium text-ink">
+                View details
+              </span>
+            )}
+            <span
+              aria-hidden="true"
+              className="flex size-10 items-center justify-center rounded-full border border-line-strong text-ink transition-colors duration-300 group-hover:border-ink group-hover:bg-ink group-hover:text-cream"
+            >
+              <ArrowUpRight className="size-4" strokeWidth={1.75} />
             </span>
-          ) : (
-            <span aria-hidden="true" className="text-sm font-medium text-ink">
-              View details
-            </span>
-          )}
-          <span
-            aria-hidden="true"
-            className="flex size-10 items-center justify-center rounded-full border border-line-strong text-ink transition-colors duration-300 group-hover:border-ink group-hover:bg-ink group-hover:text-cream"
-          >
-            <ArrowUpRight className="size-4" strokeWidth={1.75} />
-          </span>
+          </div>
         </div>
       </div>
     </article>

@@ -7,7 +7,7 @@ import { cn } from "@/lib/cn";
 interface QuantityStepperProps {
   value: number;
   onChange: (value: number) => void;
-  /** Used in the button labels, e.g. "Decrease quantity of Pen Option 1". */
+  /** Used in the button labels, e.g. "Decrease quantity of HGH 24 IU Vial". */
   label: string;
   size?: "sm" | "lg";
   className?: string;

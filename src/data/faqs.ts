@@ -25,13 +25,13 @@ export const faqGroups: FaqGroup[] = [
       {
         question: "What products does HGH Bali list?",
         answer:
-          "The catalogue lists three HGH box options and five pen options. Final names, labelled strengths and packaging details for each option are published once they have been confirmed against the product label and supporting documentation.",
+          "The catalogue lists two HGH boxes, three single vial options and five pens. Each product page shows the labelled strength, packaging details and price; anything not yet confirmed against the product label and supporting documentation is marked “To be confirmed”.",
         featured: true,
       },
       {
         question: "What was the previously listed HGH product?",
         answer:
-          "The previous HGH Bali website described Somatropin labelled at 10 IU / 3.33 mg per vial, with 10 vials per box (100 IU in total). These details are not assumed to apply to every new catalogue option — check each product's own specifications.",
+          "The previous HGH Bali website described Somatropin labelled at 10 IU / 3.33 mg per vial, with 10 vials per box (100 IU in total). The Somatropin HGH 191aa 100 IU box in the catalogue carries the same labelled strength and vial count; other options have their own specifications — check each product page.",
       },
       {
         question: "How many IU are in one box?",
@@ -46,7 +46,7 @@ export const faqGroups: FaqGroup[] = [
       },
       {
         onProductPages: true,
-        question: "Are the pens interchangeable with the HGH boxes?",
+        question: "Are the pens, vials and HGH boxes interchangeable?",
         answer:
           "No. Products are grouped by presentation for easier browsing only. Different products should not be treated as medically interchangeable — suitability is a matter for a qualified healthcare professional.",
       },
@@ -116,7 +116,7 @@ export const faqGroups: FaqGroup[] = [
         onProductPages: true,
         question: "Can I order directly on this website?",
         answer:
-          "You can add products to your cart here. When you proceed to checkout, your cart is transferred to Peptides Bali (peptidesbali.online), where prices, payment and delivery are confirmed. For questions before ordering, send an enquiry and the Atlas Longevity team will reply.",
+          "You can add products to your cart here. Prices are the same as on Peptides Bali. When you proceed to checkout, your cart is transferred to Peptides Bali (peptidesbali.online), where delivery is added and payment is completed. For questions before ordering, send an enquiry and the Atlas Longevity team will reply.",
         featured: true,
       },
       {

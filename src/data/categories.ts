@@ -48,6 +48,32 @@ export const categories: Record<ProductCategory, CategoryInfo> = {
       },
     },
   },
+  "single-vials": {
+    slug: "single-vials",
+    name: "Single Vials",
+    optionLabel: "single vial options",
+    itemLabel: "HGH vial",
+    href: "/products/single-vials/",
+    description:
+      "Single HGH vials. Each option lists its labelled strength and contents once confirmed against the product label.",
+    seoTitle: "Single HGH Vials — Product Catalogue",
+    seoDescription:
+      "Browse the single HGH vial options in the HGH Bali catalogue by Atlas Longevity, with labelled specifications, packaging details and batch documentation.",
+    illustration: {
+      wide: {
+        src: "/images/illustrative/single-vials-wide.jpg",
+        alt: "Illustrative render of a single unlabelled glass vial with white powder — not the actual product",
+        width: 1600,
+        height: 1000,
+      },
+      square: {
+        src: "/images/illustrative/single-vials-square.jpg",
+        alt: "Illustrative render of a single unlabelled glass vial with white powder — not the actual product",
+        width: 1400,
+        height: 1400,
+      },
+    },
+  },
   pens: {
     slug: "pens",
     name: "Pens",
@@ -76,4 +102,4 @@ export const categories: Record<ProductCategory, CategoryInfo> = {
   },
 };
 
-export const categoryOrder: ProductCategory[] = ["hgh-boxes", "pens"];
+export const categoryOrder: ProductCategory[] = ["hgh-boxes", "single-vials", "pens"];
