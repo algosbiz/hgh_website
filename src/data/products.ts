@@ -10,76 +10,75 @@ import type { Product } from "@/types/product";
  * - The order of this list is the order shown on the website.
  * - See README.md ("Mengubah detail produk") for step-by-step instructions.
  *
- * Names, photos and prices match peptidesbali.online (16 October 2026).
+ * Names, photos and prices match peptidesbali.online (22 October 2026).
  * The price shown on the website is read live from Peptides Bali when the
  * store can be reached; `price.amount` is the fallback.
  */
 export const products: Product[] = [
   // ---------------------------------------------------------------------------
-  // HGH BOXES (2)
+  // HGH BOXES (2) — HGH Somatropin Bali & Indonesia (`hgh-somatropin-bali-indonesia`, 10304)
   // ---------------------------------------------------------------------------
   {
-    id: "box-191aa-100iu",
-    slug: "somatropin-hgh-191aa-100iu",
-    name: "Somatropin HGH 191aa 100 IU",
+    id: "box-100iu",
+    slug: "hgh-somatropin-100iu-box",
+    name: "HGH Somatropin 100 IU Box",
     category: "hgh-boxes",
     status: "draft",
     shortDescription:
-      "Box of 10 Somatropin vials labelled 10 IU / 3.33 mg each — 100 IU in total.",
+      "Atlas Longevity box with 10 HGH vials of 10 IU each — 100 IU in total.",
     description: [
-      "A box of 10 Somatropin vials, each labelled 10 IU / 3.33 mg, for 100 IU in total. The box also contains 10 ampoules of bacteriostatic water (2 ml each), as printed on the packaging.",
+      "An Atlas Longevity presentation box with 10 HGH Somatropin vials labelled 10 IU each, for 100 IU in total, together with 10 vials of bacteriostatic water (3 ml each).",
       "Supporting documentation is being confirmed and will only be published once verified.",
     ],
     images: [
       {
-        src: "/images/products/somatropin-hgh-191aa-100iu/main.webp",
-        alt: "Somatropin HGH 191aa box, front and back — 10 IU / 3.33 mg, 10 vials pack",
-        width: 1266,
-        height: 486,
+        src: "/images/products/hgh-somatropin-100iu-box/main.webp",
+        alt: "Atlas Longevity HGH Somatropin 100 IU box with 10 × 10 IU HGH vials and 10 × 3 ml bacteriostatic water",
+        width: 1400,
+        height: 933,
       },
     ],
     specifications: [
       { label: "Active ingredient", value: "Somatropin (HGH)" },
-      { label: "Labelled strength", value: "10 IU / 3.33 mg per vial" },
+      { label: "Labelled strength", value: "10 IU per vial" },
       { label: "Vials per box", value: "10" },
       { label: "Total per box", value: "100 IU" },
       { label: "Presentation", value: null },
       { label: "Vial size", value: null },
     ],
     packaging: [
-      { label: "Outer packaging", value: null },
-      { label: "Box contents", value: "10 vials, 10 × 2 ml ampoules of bacteriostatic water" },
-      { label: "Batch & expiry labelling", value: "Printed on the box" },
-      { label: "Storage instructions", value: "2–8 °C, protect from light (as printed on the box)" },
+      { label: "Outer packaging", value: "Atlas Longevity presentation box" },
+      { label: "Box contents", value: "10 × 10 IU HGH vials, 10 × 3 ml bacteriostatic water" },
+      { label: "Batch & expiry labelling", value: null },
+      { label: "Storage instructions", value: null },
     ],
-    manufacturer: { name: "Cooper Pharma Limited", details: "As printed on the box." },
+    manufacturer: { name: null, details: null },
     documents: [
       {
-        id: "box-191aa-100iu-coa",
+        id: "box-100iu-coa",
         title: "Certificate of Analysis",
         type: "certificate-of-analysis",
         status: "pending",
       },
       {
-        id: "box-191aa-100iu-manufacturer",
+        id: "box-100iu-manufacturer",
         title: "Manufacturer documentation",
         type: "manufacturer",
         status: "pending",
       },
     ],
     faqs: [],
-    price: { amount: 5_500_000, currency: "IDR", approvedForDisplay: true },
+    price: { amount: 4_000_000, currency: "IDR", approvedForDisplay: true },
     commerce: {
       destination: "peptides-bali",
-      // Somatropin HGH 191aa (`hgh-somatropin-bali`), a simple product.
-      productId: 1252,
-      variationId: null,
+      productId: 10304,
+      variationId: 10305,
       mappingConfirmed: true,
     },
     seo: {
-      title: "Somatropin HGH 191aa 100 IU — Product Information",
+      title: "HGH Somatropin 100 IU Box — Product Information",
       description:
-        "Somatropin HGH 191aa, 10 vials × 10 IU (100 IU), in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and price.",
+        "HGH Somatropin 100 IU box (10 vials × 10 IU) in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and price.",
     },
   },
   {
@@ -135,7 +134,6 @@ export const products: Product[] = [
     price: { amount: 6_500_000, currency: "IDR", approvedForDisplay: true },
     commerce: {
       destination: "peptides-bali",
-      // HGH Somatropin Bali & Indonesia (`hgh-somatropin-bali-indonesia`) — 180 IU.
       productId: 10304,
       variationId: 10306,
       mappingConfirmed: true,
@@ -148,8 +146,70 @@ export const products: Product[] = [
   },
 
   // ---------------------------------------------------------------------------
-  // SINGLE VIALS (3)
+  // SINGLE VIALS (3) — HGH (`hgh-10iu-bali`, 1217)
   // ---------------------------------------------------------------------------
+  {
+    id: "vial-10iu",
+    slug: "hgh-10iu-vial",
+    name: "HGH 10 IU Vial",
+    category: "single-vials",
+    status: "draft",
+    shortDescription: "A single Atlas Longevity HGH vial labelled 10 IU.",
+    description: [
+      "A single HGH vial labelled 10 IU, presented under the Atlas Longevity label.",
+      "Packaging details and supporting documentation are being confirmed and will only be published once verified.",
+    ],
+    images: [
+      {
+        src: "/images/products/hgh-10iu-vial/main.webp",
+        alt: "Atlas Longevity HGH vial labelled 10 IU",
+        width: 1050,
+        height: 1400,
+      },
+    ],
+    specifications: [
+      { label: "Active ingredient", value: "Somatropin (HGH)" },
+      { label: "Labelled strength", value: "10 IU per vial" },
+      { label: "Vials per pack", value: "1" },
+      { label: "Total per pack", value: "10 IU" },
+      { label: "Presentation", value: null },
+      { label: "Vial size", value: null },
+    ],
+    packaging: [
+      { label: "Outer packaging", value: null },
+      { label: "Pack contents", value: null },
+      { label: "Batch & expiry labelling", value: null },
+      { label: "Storage instructions", value: null },
+    ],
+    manufacturer: { name: null, details: null },
+    documents: [
+      {
+        id: "vial-10iu-coa",
+        title: "Certificate of Analysis",
+        type: "certificate-of-analysis",
+        status: "pending",
+      },
+      {
+        id: "vial-10iu-manufacturer",
+        title: "Manufacturer documentation",
+        type: "manufacturer",
+        status: "pending",
+      },
+    ],
+    faqs: [],
+    price: { amount: 1_100_000, currency: "IDR", approvedForDisplay: true },
+    commerce: {
+      destination: "peptides-bali",
+      productId: 1217,
+      variationId: 5708,
+      mappingConfirmed: true,
+    },
+    seo: {
+      title: "HGH 10 IU Vial — Product Information",
+      description:
+        "Single HGH vial labelled 10 IU in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and price.",
+    },
+  },
   {
     id: "vial-24iu",
     slug: "hgh-24iu-vial",
@@ -202,7 +262,6 @@ export const products: Product[] = [
     price: { amount: 1_500_000, currency: "IDR", approvedForDisplay: true },
     commerce: {
       destination: "peptides-bali",
-      // HGH (`hgh-10iu-bali`) — 24 IU.
       productId: 1217,
       variationId: 10062,
       mappingConfirmed: true,
@@ -265,7 +324,6 @@ export const products: Product[] = [
     price: { amount: 2_000_000, currency: "IDR", approvedForDisplay: true },
     commerce: {
       destination: "peptides-bali",
-      // HGH (`hgh-10iu-bali`) — 36 IU.
       productId: 1217,
       variationId: 5709,
       mappingConfirmed: true,
@@ -274,70 +332,6 @@ export const products: Product[] = [
       title: "HGH 36 IU Vial — Product Information",
       description:
         "Single HGH vial labelled 36 IU in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and price.",
-    },
-  },
-  {
-    id: "vial-100iu",
-    slug: "hgh-somatropin-100iu",
-    name: "HGH Somatropin 100 IU",
-    category: "single-vials",
-    status: "draft",
-    shortDescription:
-      "Atlas Longevity set of 10 HGH vials of 10 IU each — 100 IU in total.",
-    description: [
-      "An Atlas Longevity presentation box with 10 HGH Somatropin vials labelled 10 IU each, for 100 IU in total, together with 10 vials of bacteriostatic water (3 ml each).",
-      "Supporting documentation is being confirmed and will only be published once verified.",
-    ],
-    images: [
-      {
-        src: "/images/products/hgh-somatropin-100iu/main.webp",
-        alt: "Atlas Longevity HGH Somatropin 100 IU box with 10 × 10 IU HGH vials and 10 × 3 ml bacteriostatic water",
-        width: 1400,
-        height: 933,
-      },
-    ],
-    specifications: [
-      { label: "Active ingredient", value: "Somatropin (HGH)" },
-      { label: "Labelled strength", value: "10 IU per vial" },
-      { label: "Vials per pack", value: "10" },
-      { label: "Total per pack", value: "100 IU" },
-      { label: "Presentation", value: null },
-      { label: "Vial size", value: null },
-    ],
-    packaging: [
-      { label: "Outer packaging", value: "Atlas Longevity presentation box" },
-      { label: "Pack contents", value: "10 × 10 IU HGH vials, 10 × 3 ml bacteriostatic water" },
-      { label: "Batch & expiry labelling", value: null },
-      { label: "Storage instructions", value: null },
-    ],
-    manufacturer: { name: null, details: null },
-    documents: [
-      {
-        id: "vial-100iu-coa",
-        title: "Certificate of Analysis",
-        type: "certificate-of-analysis",
-        status: "pending",
-      },
-      {
-        id: "vial-100iu-manufacturer",
-        title: "Manufacturer documentation",
-        type: "manufacturer",
-        status: "pending",
-      },
-    ],
-    faqs: [],
-    price: { amount: 4_000_000, currency: "IDR", approvedForDisplay: true },
-    commerce: {
-      destination: "peptides-bali",
-      // HGH Somatropin Bali & Indonesia (`hgh-somatropin-bali-indonesia`) — 100 IU.
-      productId: 10304,
-      variationId: 10305,
-      mappingConfirmed: true,
-    },
-    seo: {
-      title: "HGH Somatropin 100 IU — Product Information",
-      description:
-        "HGH Somatropin 100 IU (10 vials × 10 IU) in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and price.",
     },
   },
 

@@ -1,6 +1,5 @@
-import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import { site } from "@/data/site";
+import type { Product } from "@/types/product";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/SectionHeading";
@@ -8,27 +7,17 @@ import { HeroVisual } from "./HeroVisual";
 
 interface HeroProps {
   productCount: number;
+  /** Shown on the right (the first product in the catalogue). */
+  featured: Product;
 }
 
-export function Hero({ productCount }: HeroProps) {
+export function Hero({ productCount, featured }: HeroProps) {
   return (
     <section aria-labelledby="hero-title" className="relative isolate overflow-hidden">
-      {/* Background photo (`site.heroImage`), faded to cream behind the text. */}
-      <Image
-        src={site.heroImage.src}
-        alt=""
-        fill
-        preload
-        sizes="100vw"
-        className="-z-20 object-cover object-[70%_50%] lg:object-right"
-      />
+      {/* Soft gold glow behind the featured product. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-linear-to-b from-cream from-55% to-cream/40 lg:hidden"
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 -z-10 hidden bg-linear-[72deg,var(--color-cream)_43%,transparent_77%] lg:block"
+        className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_78%_45%,var(--color-gold-soft),transparent_58%)]"
       />
 
       <Container className="grid items-center gap-14 pt-10 pb-20 sm:pt-16 lg:grid-cols-12 lg:gap-12 lg:pt-20 lg:pb-28">
@@ -78,7 +67,7 @@ export function Hero({ productCount }: HeroProps) {
         </div>
 
         <div className="lg:col-span-6">
-          <HeroVisual />
+          <HeroVisual product={featured} />
         </div>
       </Container>
     </section>

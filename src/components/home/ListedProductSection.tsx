@@ -6,8 +6,9 @@ import { Container } from "@/components/ui/Container";
 import { Eyebrow, SectionHeading } from "@/components/ui/SectionHeading";
 
 /**
- * The Somatropin product from the previous HGH Bali listing, with the same
- * two photos and layout as on that site: specifications, then the 100 IU box.
+ * The Somatropin product from the previous HGH Bali listing (specifications,
+ * then the 100 IU box), illustrated with photos of the current catalogue's
+ * 10 IU vial and 100 IU box.
  */
 export function ListedProductSection() {
   const { images } = listedProduct;
@@ -19,13 +20,13 @@ export function ListedProductSection() {
     >
       <Container className="flex flex-col gap-16 sm:gap-24">
         <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
-          <div className="relative aspect-square overflow-hidden rounded-[1.75rem] border border-line bg-sand lg:col-span-5">
+          <div className="relative aspect-square overflow-hidden rounded-[1.75rem] border border-line bg-paper lg:col-span-5">
             <Image
               src={images.specifications.src}
               alt={images.specifications.alt}
               fill
               sizes="(min-width: 1280px) 31rem, (min-width: 1024px) 40vw, 92vw"
-              className="object-cover"
+              className="object-contain p-8"
             />
           </div>
 
@@ -34,7 +35,7 @@ export function ListedProductSection() {
               id="listed-product-title"
               eyebrow="Previously listed product"
               title={`${listedProduct.name} ${listedProduct.labelledStrength.replace(" per vial", "")}`}
-              description="Product specifications from the previous HGH Bali listing, kept for reference. The Somatropin HGH 191aa 100 IU box in the catalogue carries the same labelled strength and vial count."
+              description="Product specifications from the previous HGH Bali listing, kept for reference. The HGH Somatropin 100 IU Box in the catalogue also holds 10 vials of 10 IU."
             />
             <dl className="mt-8 divide-y divide-line border-y border-line">
               {listedProduct.specifications.map((spec) => (
@@ -80,19 +81,19 @@ export function ListedProductSection() {
               {listedProduct.labelledStrength.replace(" per vial", "")},
               providing {listedProduct.totalPerBox} in total.
             </p>
-            <ButtonLink href="/contact/" variant="secondary" className="mt-8">
-              Ask about availability
+            <ButtonLink href={listedProduct.catalogueHref} variant="secondary" className="mt-8">
+              View the 100 IU box
               <ArrowRight aria-hidden="true" className="size-4" />
             </ButtonLink>
           </div>
 
-          <div className="relative aspect-[3/2] overflow-hidden rounded-[1.75rem] border border-line bg-sand lg:col-span-7">
+          <div className="relative aspect-[3/2] overflow-hidden rounded-[1.75rem] border border-line bg-paper lg:col-span-7">
             <Image
               src={images.box.src}
               alt={images.box.alt}
               fill
               sizes="(min-width: 1280px) 44rem, (min-width: 1024px) 56vw, 92vw"
-              className="object-cover"
+              className="object-contain p-4"
             />
           </div>
         </div>

@@ -61,17 +61,14 @@ export function Footer() {
       <Container className="pt-16 pb-28 sm:pt-20 sm:pb-28">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <Link
-              href="/"
-              className="inline-flex overflow-hidden rounded-xl transition-opacity hover:opacity-90"
-            >
+            <Link href="/" className="inline-flex transition-opacity hover:opacity-90">
               <Image
-                src={site.footerBanner.src}
-                alt={site.footerBanner.alt}
-                width={site.footerBanner.width}
-                height={site.footerBanner.height}
-                sizes="12rem"
-                className="h-20 w-auto"
+                src={site.logo.src}
+                alt={site.logo.alt}
+                width={site.logo.width}
+                height={site.logo.height}
+                sizes="16rem"
+                className="h-14 w-auto sm:h-16"
               />
               <span className="sr-only">{site.name} — home</span>
             </Link>

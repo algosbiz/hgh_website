@@ -5,7 +5,6 @@ import type { ProductCategory } from "@/types/product";
 import { categories, categoryOrder } from "@/data/categories";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { IllustrativeLabel } from "@/components/products/ProductImage";
 
 const numberWords = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
 
@@ -33,18 +32,17 @@ export function CategoryCards({ counts }: CategoryCardsProps) {
                 key={slug}
                 className="group relative flex flex-col overflow-hidden rounded-[1.75rem] border border-line bg-paper transition-[border-color,box-shadow] duration-300 ease-soft hover:border-line-strong hover:shadow-lift"
               >
-                <div className="relative aspect-[16/10] overflow-hidden border-b border-line bg-sand">
+                <div className="relative aspect-[16/10] overflow-hidden border-b border-line bg-paper">
                   <Image
-                    src={category.illustration.wide.src}
-                    alt={category.illustration.wide.alt}
+                    src={category.photo.src}
+                    alt={category.photo.alt}
                     fill
-                    sizes="(min-width: 768px) 38rem, 92vw"
-                    className="object-cover transition-transform duration-700 ease-soft motion-safe:group-hover:scale-[1.03]"
+                    sizes="(min-width: 1024px) 26rem, (min-width: 768px) 46vw, 92vw"
+                    className="object-contain p-4 transition-transform duration-700 ease-soft motion-safe:group-hover:scale-[1.03]"
                   />
                   <span className="absolute top-5 left-6 font-display text-sm text-muted tabular-nums">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <IllustrativeLabel />
                 </div>
 
                 <div className="flex flex-1 flex-col p-7 sm:p-9">

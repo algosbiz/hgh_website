@@ -10,11 +10,14 @@ export const site = {
   description:
     "HGH Bali by Atlas Longevity: product catalogue, labelled specifications, packaging details and batch testing documentation for HGH boxes, single vials and pens in Bali and Indonesia.",
   defaultUrl: "https://hghbali.com",
+  // Atlas Longevity HGH Bali logo (client, 18 October 2026), white background
+  // removed and trimmed. Used in the header and footer; the favicon, Apple
+  // icon and share images in `src/app/` are made from it.
   logo: {
-    src: "/images/brand/hgh-bali-logo.png",
-    width: 1206,
-    height: 439,
-    alt: "HGH Bali — Human Growth Hormone (Somatropin)",
+    src: "/images/brand/atlas-hgh-bali-logo.png",
+    width: 1400,
+    height: 344,
+    alt: "Atlas Longevity HGH Bali — Human Growth Hormone",
   },
   contact: {
     // Atlas Longevity WhatsApp number used on the sister sites
@@ -24,27 +27,14 @@ export const site = {
     // Set to an approved HGH Bali email address to show it on the site.
     email: null as string | null,
   },
-  // Photos carried over from the previous hghbali.com website, used in the
-  // same sections as on that site (see docs/audit.md §3).
-  //
-  // Homepage hero background (wide, ~1600 × 900). Decorative, so no alt
-  // text. The left side is covered by a cream gradient for readability.
-  heroImage: {
-    src: "/images/site/hero-clinic-lobby.jpg",
-  },
-  // Delivery section on the homepage.
+  // Delivery section on the homepage: a product photo, shown on white.
+  // (The clinic photos from the old website were removed at the client's
+  // request on 18 October 2026.)
   deliveryImage: {
-    src: "/images/site/clinic-treatment-room.jpg",
-    alt: "Bright treatment room with a padded bed, plants and gold accents",
-    width: 768,
-    height: 768,
-  },
-  // Footer brand banner.
-  footerBanner: {
-    src: "/images/brand/hgh-banner.jpg",
-    alt: "HGH — Human Growth Hormone (Somatropin) Injection",
-    width: 854,
-    height: 370,
+    src: "/images/products/hgh-somatropin-pen-108iu/main.webp",
+    alt: "Atlas Longevity HGH Somatropin 108 IU prefilled pen with its kit box",
+    width: 1254,
+    height: 1254,
   },
 } as const;
 

@@ -47,7 +47,7 @@ export default function HomePage() {
 
   return (
     <>
-      <Hero productCount={products.length} />
+      <Hero productCount={products.length} featured={products[0]} />
       <ListedProductSection />
       <CategoryCards counts={counts} />
       <CatalogueSection items={toCatalogueItems(products)} />

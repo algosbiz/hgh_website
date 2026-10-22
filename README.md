@@ -116,7 +116,7 @@ src/
 ├── types/product.ts        # Definisi tipe data produk
 └── styles/globals.css      # Warna, font, dan style dasar (design tokens)
 
-public/images/              # Logo, foto dari website lama (site/) dan foto produk
+public/images/              # Logo (brand/), foto produk (products/) dan kartu kategori (categories/)
 docs/                       # Dokumentasi audit & integrasi
 ```
 
@@ -272,26 +272,23 @@ pen injector putih-emas. Gambar ini **bukan foto produk asli**.
 - Sumber 3D untuk membuat ulang render ada di `docs/illustrations/scene.html` (buka di
   browser, contoh: `scene.html?mode=hero&w=1400&h=1400`, lalu simpan gambar canvas).
 
-### Foto dari website lama (hghbali.com)
+### Logo, homepage dan kartu kategori
 
-Atas permintaan klien, foto dari website WordPress lama dipakai lagi di section yang sama
-seperti di website lama. File ada di `public/images/site/` dan `public/images/brand/`:
+Foto interior klinik dari website lama (hero, AOBA Clinic, Longevity Center, ruang
+perawatan) **sudah dihapus** atas permintaan klien (18 Oktober 2026: "looks like a clinic
+website"). Semua gambar di homepage sekarang foto produk, ditampilkan di atas latar putih:
 
-| File                                   | Asal (website lama)          | Dipakai di                                   | Diatur di                               |
-| -------------------------------------- | ---------------------------- | -------------------------------------------- | --------------------------------------- |
-| `site/hero-clinic-lobby.jpg`           | `4.jpg` (background hero)    | Background hero homepage                     | `heroImage` — `src/data/site.ts`        |
-| `site/clinic-reception.jpg`            | `1.jpg` (section Product)    | Homepage — spesifikasi Somatropin            | `images` — `src/data/listed-product.ts` |
-| `site/clinic-reception-hallway.jpg`    | `0.jpg` (100 IU Complete Box)| Homepage — 100 IU complete box               | `images` — `src/data/listed-product.ts` |
-| `site/clinic-treatment-room.jpg`       | `2.jpg` (section Delivery)   | Homepage — section Delivery                  | `deliveryImage` — `src/data/site.ts`    |
-| `brand/hgh-banner.jpg`                 | Banner "HGH" di footer       | Footer semua halaman                         | `footerBanner` — `src/data/site.ts`     |
+| Bagian                         | Gambar                                                        | Diatur di |
+| ------------------------------ | ------------------------------------------------------------- | --------- |
+| Logo (header & footer)         | `brand/atlas-hgh-bali-logo.png` — logo Atlas Longevity HGH Bali dari klien, latar putih dibuat transparan | `logo` — `src/data/site.ts` |
+| Favicon / Apple icon           | `src/app/icon.png`, `src/app/apple-icon.png` — emblem dari logo, emas di atas latar gelap | file itu sendiri |
+| Gambar share (WhatsApp, Facebook, X) | `src/app/opengraph-image.png`, `src/app/twitter-image.png` — logo baru di latar krem | file itu sendiri |
+| Hero (kanan)                   | Foto produk **pertama** di katalog + 3 spesifikasi + harga     | urutan di `src/data/products.ts` |
+| Kartu kategori                 | Box 100 IU · gabungan vial 10/24/36 IU (`categories/single-vials.webp`) · pen 10 IU | `photo` — `src/data/categories.ts` |
+| Produk lama (Somatropin 10 IU) | Vial 10 IU dan box 100 IU dari katalog                        | `images` — `src/data/listed-product.ts` |
+| Delivery                       | Pen 108 IU                                                    | `deliveryImage` — `src/data/site.ts` |
 
-> **Perhatian:** `clinic-reception.jpg` menampilkan tulisan **"AOBA CLINIC"** dan
-> `clinic-reception-hallway.jpg` menampilkan **"longevity CENTER SWITZERLAND"** — merek
-> klinik pihak ketiga. Pastikan klien punya izin memakai foto ini (lihat `docs/audit.md` §3).
-> Untuk menggantinya, cukup timpa file dengan nama yang sama atau ubah `src` di file data.
-
-Foto-foto ini adalah foto interior klinik, **bukan foto produk**, sehingga tidak dipakai di
-kartu/halaman produk.
+Aset asli dari klien ada di folder Google Drive "HGH New" (logo, foto box, vial dan pen).
 
 ---
 
@@ -577,14 +574,12 @@ commerce: {
 },
 ```
 
-Pemetaan saat ini (16 Oktober 2026):
+Pemetaan saat ini (22 Oktober 2026):
 
 | Produk HGH Bali | Peptides Bali (ID produk) | ID variasi |
 | --------------- | ------------------------- | ---------- |
-| Somatropin HGH 191aa 100 IU (box) | Somatropin HGH 191aa (`hgh-somatropin-bali`, 1252) | — (tanpa variasi) |
-| HGH Somatropin 180 IU Box | HGH Somatropin Bali & Indonesia (`hgh-somatropin-bali-indonesia`, 10304) — 180 IU | 10306 |
-| HGH 24 IU Vial / HGH 36 IU Vial | HGH (`hgh-10iu-bali`, 1217) — 24 / 36 IU | 10062 / 5709 |
-| HGH Somatropin 100 IU (Single Vials) | HGH Somatropin Bali & Indonesia (10304) — 100 IU | 10305 |
+| HGH Somatropin 100 IU Box / 180 IU Box | HGH Somatropin Bali & Indonesia (`hgh-somatropin-bali-indonesia`, 10304) — 100 / 180 IU | 10305 / 10306 |
+| HGH 10 / 24 / 36 IU Vial | HGH (`hgh-10iu-bali`, 1217) — 10 / 24 / 36 IU | 5708 / 10062 / 5709 |
 | HGH Somatropin Pen 10 / 24 / 36 / 72 / 108 IU — *Disposable pen* | HGH Somatropin (`hgh-somatropin`, 9981) | 9984 / 10064 / 9985 / 10065 / 10066 |
 | … — *Reusable pen* | HGH Somatropin (9981) | 9986 / 10067 / 9987 / 10068 / 10069 |
 | … — *Cartridge* | HGH Somatropin (9981) | 9988 / 10070 / 9989 / 10071 / 10072 |

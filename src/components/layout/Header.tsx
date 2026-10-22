@@ -12,7 +12,8 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-line/80 bg-cream/90 backdrop-blur-md supports-[backdrop-filter]:bg-cream/80">
       <Container className="flex h-[4.5rem] items-center justify-between gap-4">
-        <Logo className="h-11 sm:h-12" preload />
+        {/* The logo is wide (about 4:1): smaller on narrow phones and beside the desktop nav at lg. */}
+        <Logo className="h-7 min-[400px]:h-9 sm:h-12 lg:h-10 xl:h-12" preload />
         <DesktopNav items={mainNav} />
         <div className="flex items-center gap-2">
           <Link

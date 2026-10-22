@@ -225,3 +225,26 @@ The client asked for three single vial options (HGH 24 IU, HGH 36 IU, HGH Somatr
   10305 × 1, 9988 (cartridge) × 2 and 9986 (reusable pen) × 1 arrived with the right pen
   types and a subtotal of Rp 9,100,000. The destination adds a 5% payment adjustment for
   some payment methods, which HGH Bali does not show.
+
+---
+
+## 11. Client changes tab (18 October 2026, implemented 22 October 2026)
+
+From the "Changes" tab of the client's "HGH 1 page site new" document and the "HGH New"
+Drive folder:
+
+1. **Cart to Peptides Bali** — already live; the client confirmed it works.
+2. **Logo** — replaced with the client's Atlas Longevity HGH Bali logo.
+3. **Category images** — the illustrative renders on the homepage category cards were
+   replaced with product photos.
+4. **Box photo** — the client asked for the Atlas 100 IU box photo instead of the black
+   "Somatropin HGH 191aa" (Cooper Pharma) box. The catalogue was rearranged with the
+   project team to match the Drive folder: HGH Boxes = Atlas 100 IU (10305) and 180 IU
+   (10306); Single Vials = HGH 10 / 24 / 36 IU (5708 / 10062 / 5709). Product 1252
+   (Somatropin HGH 191aa) is no longer listed.
+5. **Clinic photos** — the hero background, the AOBA Clinic and Longevity Center photos and
+   the treatment-room photo were removed; the homepage uses product photos instead.
+
+The rest of that document (Tab 1) is a separate plan for a one-page WordPress website with
+educational content, a certificate verification system and an SEO strategy. It was not
+part of the changes list and has not been implemented.

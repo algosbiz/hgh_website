@@ -66,13 +66,13 @@ export function DeliverySection() {
 
         <div className="lg:col-span-5">
           <div className="lg:sticky lg:top-28">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] border border-line bg-sand lg:aspect-[4/5]">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] border border-line bg-paper lg:aspect-[4/5]">
               <Image
                 src={site.deliveryImage.src}
                 alt={site.deliveryImage.alt}
                 fill
                 sizes="(min-width: 1280px) 28rem, (min-width: 1024px) 36vw, 92vw"
-                className="object-cover"
+                className="object-contain p-4"
               />
             </div>
           </div>

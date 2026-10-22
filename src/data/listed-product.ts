@@ -1,8 +1,8 @@
 /**
  * The Somatropin product described on the previous HGH Bali website.
  *
- * Kept as a factual reference. "Somatropin HGH 191aa 100 IU" in
- * `products.ts` carries the same labelled strength and vial count.
+ * Kept as a factual reference. The current "HGH Somatropin 100 IU Box" in
+ * `products.ts` also holds 10 vials of 10 IU.
  */
 export const listedProduct = {
   name: "Somatropin",
@@ -19,20 +19,22 @@ export const listedProduct = {
     { label: "Total somatropin", value: "100 IU per box" },
   ],
   source: "Previous HGH Bali product listing",
-  // Photos shown beside this product on the previous hghbali.com website.
-  // They show clinic interiors, not the product itself.
+  /** The catalogue product with the same vial count and strength. */
+  catalogueHref: "/products/hgh-somatropin-100iu-box/",
+  // Photos of current catalogue products (the client asked for the clinic
+  // photos from the old website to be replaced on 18 October 2026).
   images: {
     specifications: {
-      src: "/images/site/clinic-reception.jpg",
-      alt: "Clinic reception with a white desk, gold stools and pendant lights",
-      width: 939,
-      height: 939,
+      src: "/images/products/hgh-10iu-vial/main.webp",
+      alt: "Atlas Longevity HGH vial labelled 10 IU, from the current catalogue",
+      width: 1050,
+      height: 1400,
     },
     box: {
-      src: "/images/site/clinic-reception-hallway.jpg",
-      alt: "Clinic reception desk and hallway with a gold tree wall sculpture",
-      width: 1600,
-      height: 1067,
+      src: "/images/products/hgh-somatropin-100iu-box/main.webp",
+      alt: "Atlas Longevity HGH Somatropin 100 IU box with 10 × 10 IU vials, from the current catalogue",
+      width: 1400,
+      height: 933,
     },
   },
 } as const;

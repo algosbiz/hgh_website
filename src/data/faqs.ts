@@ -31,7 +31,7 @@ export const faqGroups: FaqGroup[] = [
       {
         question: "What was the previously listed HGH product?",
         answer:
-          "The previous HGH Bali website described Somatropin labelled at 10 IU / 3.33 mg per vial, with 10 vials per box (100 IU in total). The Somatropin HGH 191aa 100 IU box in the catalogue carries the same labelled strength and vial count; other options have their own specifications — check each product page.",
+          "The previous HGH Bali website described Somatropin labelled at 10 IU / 3.33 mg per vial, with 10 vials per box (100 IU in total). The HGH Somatropin 100 IU Box in the catalogue also holds 10 vials of 10 IU; each option has its own specifications — check each product page.",
       },
       {
         question: "How many IU are in one box?",

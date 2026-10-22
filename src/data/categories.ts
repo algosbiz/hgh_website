@@ -11,8 +11,10 @@ export interface CategoryInfo {
   description: string;
   seoTitle: string;
   seoDescription: string;
+  /** Product photo on the homepage category card (shown on white). */
+  photo: ProductImage;
   /**
-   * Generic, unbranded renders used until approved product photos exist.
+   * Generic, unbranded renders, used only for a product that has no photo.
    * Always shown with an "Illustrative image" label.
    */
   illustration: {
@@ -33,6 +35,12 @@ export const categories: Record<ProductCategory, CategoryInfo> = {
     seoTitle: "HGH Boxes — Product Catalogue",
     seoDescription:
       "Browse the HGH box options in the HGH Bali catalogue by Atlas Longevity, with labelled specifications, packaging details and batch documentation.",
+    photo: {
+      src: "/images/products/hgh-somatropin-100iu-box/main.webp",
+      alt: "Atlas Longevity HGH Somatropin 100 IU box with 10 HGH vials and 10 vials of bacteriostatic water",
+      width: 1400,
+      height: 933,
+    },
     illustration: {
       wide: {
         src: "/images/illustrative/hgh-boxes-wide.jpg",
@@ -59,6 +67,12 @@ export const categories: Record<ProductCategory, CategoryInfo> = {
     seoTitle: "Single HGH Vials — Product Catalogue",
     seoDescription:
       "Browse the single HGH vial options in the HGH Bali catalogue by Atlas Longevity, with labelled specifications, packaging details and batch documentation.",
+    photo: {
+      src: "/images/categories/single-vials.webp",
+      alt: "Atlas Longevity HGH vials labelled 10 IU, 24 IU and 36 IU",
+      width: 1600,
+      height: 1000,
+    },
     illustration: {
       wide: {
         src: "/images/illustrative/single-vials-wide.jpg",
@@ -85,6 +99,12 @@ export const categories: Record<ProductCategory, CategoryInfo> = {
     seoTitle: "Pens — Product Catalogue",
     seoDescription:
       "Browse the pen options in the HGH Bali catalogue by Atlas Longevity, with labelled specifications, packaging details and batch documentation.",
+    photo: {
+      src: "/images/products/hgh-somatropin-pen-10iu/main.webp",
+      alt: "Atlas Longevity HGH Somatropin 10 IU prefilled pen with its kit box",
+      width: 1254,
+      height: 1254,
+    },
     illustration: {
       wide: {
         src: "/images/illustrative/pens-wide.jpg",

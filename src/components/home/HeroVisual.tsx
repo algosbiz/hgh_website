@@ -1,53 +1,74 @@
-import { FileClock } from "lucide-react";
-import { listedProduct } from "@/data/listed-product";
-import { site } from "@/data/site";
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import type { Product } from "@/types/product";
+import { ProductPrice } from "@/components/cart/ProductPrice";
+import { getDisplayPrice } from "@/lib/products";
 
 /**
- * Hero visual: a "specimen record" card of the previously listed product,
- * floating over the hero background photo.
+ * Hero visual: the featured product's photo on a white card, with three key
+ * specifications and its price.
  */
-export function HeroVisual() {
+export function HeroVisual({ product }: { product: Product }) {
+  const image = product.images[0];
+  const href = `/products/${product.slug}/`;
+  const specs = product.specifications.slice(1, 4);
+
   return (
-    <figure className="relative mx-auto w-full max-w-md rounded-[1.5rem] border border-line bg-paper/95 p-6 shadow-lift backdrop-blur-sm sm:p-7 lg:mr-0 lg:ml-auto lg:max-w-[27rem]">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <figure className="relative mx-auto w-full max-w-md overflow-hidden rounded-[1.5rem] border border-line bg-paper shadow-lift lg:mr-0 lg:ml-auto lg:max-w-[30rem]">
+      {image ? (
+        <div className="relative aspect-[3/2] border-b border-line">
+          <Image
+            src={image.src}
+            alt={image.alt}
+            fill
+            preload
+            sizes="(min-width: 1024px) 30rem, (min-width: 640px) 28rem, 92vw"
+            className="object-contain p-4"
+          />
+        </div>
+      ) : null}
+
+      <figcaption className="p-6 sm:p-7">
         <p className="text-[0.7rem] font-semibold tracking-[0.2em] text-gold-deep uppercase">
-          Currently listed product
+          Featured product
         </p>
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-gold-deep/60 px-2.5 py-1 text-xs font-medium text-gold-deep">
-          <FileClock aria-hidden="true" className="size-3.5" />
-          Testing pending
-        </span>
-      </div>
+        <p className="mt-3 font-display text-[1.75rem] leading-tight tracking-[-0.015em] text-ink">
+          <Link href={href} className="underline-offset-4 hover:underline">
+            {product.name}
+          </Link>
+        </p>
 
-      <p className="mt-5 font-display text-[2.25rem] leading-none tracking-[-0.02em] text-ink sm:text-[2.5rem]">
-        {listedProduct.name}
-      </p>
-      <p className="mt-2 text-sm text-muted">{listedProduct.labelledStrength}</p>
+        <dl className="mt-5 grid grid-cols-3 divide-x divide-line border-y border-line">
+          {specs.map((spec, index) => (
+            <div
+              key={spec.label}
+              className={index === 0 ? "py-3.5 pr-3" : index === specs.length - 1 ? "py-3.5 pl-3" : "px-3 py-3.5"}
+            >
+              <dt className="text-[0.7rem] leading-snug tracking-wide text-muted uppercase">
+                {spec.label}
+              </dt>
+              <dd className="mt-1 font-display text-lg text-ink tabular-nums">
+                {spec.value ?? "—"}
+              </dd>
+            </div>
+          ))}
+        </dl>
 
-      <dl className="mt-5 grid grid-cols-3 divide-x divide-line border-y border-line">
-        <div className="py-4 pr-3">
-          <dt className="text-xs tracking-wide text-muted uppercase">Per vial</dt>
-          <dd className="mt-1 font-display text-xl text-ink tabular-nums sm:text-2xl">
-            {listedProduct.perVial}
-          </dd>
+        <div className="mt-5 flex items-center justify-between gap-4">
+          <ProductPrice
+            productId={product.id}
+            fallback={getDisplayPrice(product)}
+            className="font-display text-2xl text-ink tabular-nums"
+          />
+          <Link
+            href={href}
+            className="inline-flex min-h-11 items-center gap-2 text-sm font-medium text-ink underline-offset-4 hover:underline"
+          >
+            View product
+            <ArrowRight aria-hidden="true" className="size-4" />
+          </Link>
         </div>
-        <div className="px-3 py-4">
-          <dt className="text-xs tracking-wide text-muted uppercase">Vials</dt>
-          <dd className="mt-1 font-display text-xl text-ink tabular-nums sm:text-2xl">
-            × {listedProduct.vialsPerBox}
-          </dd>
-        </div>
-        <div className="py-4 pl-3">
-          <dt className="text-xs tracking-wide text-muted uppercase">Per box</dt>
-          <dd className="mt-1 font-display text-xl text-gold-deep tabular-nums sm:text-2xl">
-            {listedProduct.totalPerBox}
-          </dd>
-        </div>
-      </dl>
-
-      <figcaption className="mt-4 text-xs leading-relaxed text-muted">
-        Source: the previous HGH Bali product listing by {site.legalName}.
-        Each new catalogue option is confirmed separately.
       </figcaption>
     </figure>
   );
