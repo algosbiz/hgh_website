@@ -43,14 +43,20 @@ async function fetchProducts(ids: number[], type?: "variation"): Promise<StoreAp
 
 /**
  * Stock and price of every mapped product on Peptides Bali, read from the
- * public WooCommerce Store API and refreshed hourly. If the store cannot be
+ * public WooCommerce Store API and refreshed every 10 minutes. If the store cannot be
  * reached, both are unknown: products stay available to add to the cart
  * (WooCommerce still checks stock at checkout) and the price from
  * `products.ts` is shown.
  */
 export async function getDestinationProducts(): Promise<DestinationMap> {
   "use cache";
-  cacheLife("hours");
+  // Refreshed in the background on the first request after 10 minutes, so a
+  // price change on Peptides Bali shows here within about 10 minutes.
+  cacheLife({
+    stale: 5 * 60, // the browser may reuse a page for 5 minutes
+    revalidate: 10 * 60,
+    expire: 24 * 60 * 60,
+  });
 
   const variationIds: number[] = [];
   const productIds: number[] = [];

@@ -101,7 +101,7 @@ src/lib/commerce/types.ts          CommerceProvider interface + ProductAction ("
 src/lib/commerce/enquiry-only.ts   Enquiry action only (fallback; use it to switch the cart off)
 src/lib/commerce/peptides-bali-cart.ts  Active provider — "cart" when a product has a Peptides Bali ID
 src/lib/commerce/peptides-bali.ts  Destination details, getCheckoutId(), buildCheckoutUrl()
-src/lib/commerce/stock.ts          Hourly cached stock from the public Store API
+src/lib/commerce/stock.ts          Stock and prices from the public Store API, cached 10 minutes
 src/lib/commerce/index.ts          getProductAction(product) — the only function the UI calls
 src/lib/cart-store.ts              Cart lines in localStorage (shared between tabs)
 src/components/cart/               CartProvider, CartDrawer, CartButton, AddToCartButton, ProductPurchase
@@ -215,7 +215,8 @@ The client asked for three single vial options (HGH 24 IU, HGH 36 IU, HGH Somatr
 - **New destination product:** 10304 "HGH Somatropin Bali & Indonesia" (100 IU: 10305,
   Rp 4,000,000; 180 IU: 10306, Rp 6,500,000), both "available on backorder" on that date.
 - **Prices:** shown on cards, product pages and in the cart (line totals and subtotal).
-  They are read hourly from the Store API together with stock, so they match the
+  They are read from the Store API together with stock (every 10 minutes since 26 October
+  2026; hourly before), so they match the
   destination; the amount in `products.ts` is only a fallback. Delivery is added at checkout.
 - **Photos:** copied from the matching destination product pages. The Atlas Longevity vial
   labels in these photos read "Research use only / Not for human consumption" or "Research

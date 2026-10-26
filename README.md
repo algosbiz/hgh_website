@@ -166,7 +166,7 @@ price: { amount: 1_500_000, currency: "IDR", approvedForDisplay: true },
 ```
 
 Untuk produk yang dijual lewat keranjang, website menampilkan **harga live dari Peptides
-Bali** (dibaca tiap jam, lihat bagian 17), jadi harga selalu sama dengan peptidesbali.online.
+Bali** (dibaca ulang tiap 10 menit, lihat bagian 17), jadi harga selalu sama dengan peptidesbali.online.
 `amount` hanya dipakai jika Peptides Bali tidak bisa diakses — tetap samakan dengan harga
 di sana.
 
@@ -593,7 +593,7 @@ Cara mencari ID: buka
 `variations` berisi ID tiap variasi. Hapus `productId`/`variationId` (isi `null`) jika
 produk tidak dijual online; produk itu otomatis kembali ke tombol enquiry.
 
-**Stok dan harga** dibaca dari Store API Peptides Bali dan diperbarui tiap jam
+**Stok dan harga** dibaca dari Store API Peptides Bali dan diperbarui tiap 10 menit
 (`src/lib/commerce/stock.ts`). Produk yang habis tampil **Out of stock** dan tidak bisa
 ditambahkan. Jika Peptides Bali tidak bisa diakses, produk tetap bisa ditambahkan
 (WooCommerce yang mengecek stok saat checkout) dan harga dari `products.ts` yang tampil.
