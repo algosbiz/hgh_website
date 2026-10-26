@@ -85,7 +85,7 @@ src/
 │   ├── testing/  about-hgh/  delivery/  faq/  contact/
 │   ├── privacy-policy/  terms/  medical-disclaimer/
 │   ├── sitemap.ts  robots.ts          # SEO otomatis
-│   └── icon.png  opengraph-image.png  # Ikon & gambar share sosial media
+│   └── icon.png  favicon.ico  opengraph-image.png  # Ikon & gambar share sosial media
 │
 ├── components/
 │   ├── layout/             # Header, Footer, Breadcrumbs, PageHeader
@@ -281,7 +281,7 @@ website"). Semua gambar di homepage sekarang foto produk, ditampilkan di atas la
 | Bagian                         | Gambar                                                        | Diatur di |
 | ------------------------------ | ------------------------------------------------------------- | --------- |
 | Logo (header & footer)         | `brand/atlas-hgh-bali-logo.png` — logo Atlas Longevity HGH Bali dari klien, latar putih dibuat transparan | `logo` — `src/data/site.ts` |
-| Favicon / Apple icon           | `src/app/icon.png`, `src/app/apple-icon.png` — emblem dari logo, emas di atas latar gelap | file itu sendiri |
+| Favicon / Apple icon           | `src/app/icon.png` + `src/app/favicon.ico` — tulisan "HGH" emas dari logo, latar **transparan** (permintaan klien 26 Okt 2026); `src/app/apple-icon.png` — sama, di atas latar gelap (iOS tidak mendukung transparansi) | file itu sendiri |
 | Gambar share (WhatsApp, Facebook, X) | `src/app/opengraph-image.png`, `src/app/twitter-image.png` — logo baru di latar krem | file itu sendiri |
 | Hero (kanan)                   | Foto produk **pertama** di katalog + 3 spesifikasi + harga     | urutan di `src/data/products.ts` |
 | Kartu kategori                 | Box 100 IU · gabungan vial 10/24/36 IU (`categories/single-vials.webp`) · pen 10 IU | `photo` — `src/data/categories.ts` |
