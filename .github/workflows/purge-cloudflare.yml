@@ -1,0 +1,102 @@
+# Clear Cloudflare's edge cache after a production deploy.
+#
+# Once hghbali.com is proxied through Cloudflare, the edge keeps what it cached
+# after a deploy: product photos replaced under the same file name stay old
+# until they are purged. Vercel reports every deployment to GitHub as a
+# `deployment_status` event, so when a Production deployment succeeds this
+# drops the whole zone's cache. It can also be run by hand from the Actions tab
+# ("Run workflow").
+#
+# Until the domain is on Cloudflare and the settings below exist, the run is
+# skipped with a warning instead of failing every deploy.
+#
+# SETUP, once, in this repository:
+#   Settings → Secrets and variables → Actions
+#     Secrets   → CLOUDFLARE_API_TOKEN  (Zone → Cache Purge → Purge, this zone)
+#     Variables → CLOUDFLARE_ZONE_ID    (hghbali.com zone, Overview sidebar)
+#
+# The zone ID is not a secret; in Variables it shows in the log instead of ***.
+# Secrets are still read as a fallback, for a zone ID put in the wrong tab.
+#
+# `deployment_status` workflows only run from the default branch (main).
+
+name: Purge Cloudflare cache
+
+on:
+  deployment_status:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A second deploy right after the first supersedes it: its purge covers both.
+concurrency:
+  group: purge-cache
+  cancel-in-progress: true
+
+jobs:
+  purge:
+    name: Purge everything
+    # Only production, and only once it is live. `deployment_status` also fires
+    # for pending/failure states and for every preview branch. GitHub compares
+    # strings case-insensitively, so this matches Vercel's "Production".
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.deployment_status.state == 'success' &&
+       startsWith(github.event.deployment_status.environment, 'production'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # Vercel reports success as the deployment becomes ready; give the
+      # production domain a moment to switch to it, or the edge refills from
+      # the previous build.
+      - name: Wait for the domain to serve the new build
+        if: github.event_name == 'deployment_status'
+        run: sleep 30
+
+      - name: Purge the zone
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ZONE_ID: ${{ vars.CLOUDFLARE_ZONE_ID || secrets.CLOUDFLARE_ZONE_ID }}
+          DEPLOYMENT_URL: ${{ github.event.deployment_status.environment_url }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ZONE_ID" ]; then
+            echo "::warning::Cloudflare purge skipped: set CLOUDFLARE_API_TOKEN (Secrets) and CLOUDFLARE_ZONE_ID (Variables) under Settings → Secrets and variables → Actions."
+            exit 0
+          fi
+
+          if [ -n "${DEPLOYMENT_URL:-}" ]; then
+            echo "Deployment live at $DEPLOYMENT_URL"
+          fi
+          echo "Purging zone $CLOUDFLARE_ZONE_ID"
+
+          # No --fail: Cloudflare answers HTTP 200 with "success": false for most
+          # refusals (a token without the purge permission, a zone it cannot
+          # see), so the body is what has to be checked.
+          response=$(curl --silent --show-error --max-time 30 \
+            --request POST \
+            --header "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            --header "Content-Type: application/json" \
+            --data '{"purge_everything":true}' \
+            "https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE_ID/purge_cache")
+
+          if [ "$(echo "$response" | jq -r '.success')" != "true" ]; then
+            echo "::error::Cloudflare refused the purge: $(echo "$response" | jq -c '.errors')"
+            exit 1
+          fi
+
+          echo "Cloudflare cache purged for the whole zone."
+
+      - name: Show what the edge serves now
+        # Informational only: a visitor arriving right after the purge re-warms
+        # the cache, which is not a failure.
+        continue-on-error: true
+        run: |
+          for path in / /products/; do
+            headers=$(curl --silent --show-error --max-time 30 --head "https://hghbali.com$path" | tr -d '\r')
+            status=$(echo "$headers" | awk 'NR==1{print $2}')
+            cache=$(echo "$headers" | awk -F': ' 'tolower($1)=="cf-cache-status"{print $2}')
+            echo "$path -> HTTP ${status:-?}, cf-cache-status ${cache:-none}"
+          done

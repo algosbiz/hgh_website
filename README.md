@@ -531,6 +531,23 @@ Semua harus selesai tanpa error.
    petunjuk Vercel. Lakukan ini **setelah** konten disetujui, karena website lama
    (WordPress) akan digantikan.
 
+### Purge cache Cloudflare otomatis
+
+Jika `hghbali.com` diproxy lewat Cloudflare, cache Cloudflare dikosongkan otomatis setiap
+deployment **Production** di Vercel sukses (`.github/workflows/purge-cloudflare.yml`).
+Bisa juga dijalankan manual: GitHub → **Actions → Purge Cloudflare cache → Run workflow**.
+
+Setup sekali di GitHub → **Settings → Secrets and variables → Actions**:
+
+- **Secrets** → `CLOUDFLARE_API_TOKEN`: token Cloudflare dengan izin *Zone → Cache Purge →
+  Purge* untuk zone `hghbali.com`.
+- **Variables** → `CLOUDFLARE_ZONE_ID`: Zone ID `hghbali.com` (sidebar halaman Overview di
+  Cloudflare).
+
+Selama keduanya belum diisi (atau domain belum di Cloudflare), workflow hanya memberi
+peringatan dan tidak gagal. Jangan pasang *Cache Rule* Cloudflare yang menyimpan HTML lebih
+dari 10 menit, karena harga dan stok produk diperbarui tiap 10 menit.
+
 ### Hosting lain (VPS / Node.js)
 
 ```bash
