@@ -32,7 +32,7 @@ Dokumen lain:
 8. [Mengubah warna dan font](#8-mengubah-warna-dan-font)
 9. [Mengubah bagian homepage](#9-mengubah-bagian-homepage)
 10. [Mengubah kontak, pengiriman dan FAQ](#10-mengubah-kontak-pengiriman-dan-faq)
-11. [Formulir enquiry (email)](#11-formulir-enquiry-email)
+11. [Formulir enquiry (WhatsApp)](#11-formulir-enquiry-whatsapp)
 12. [Google Analytics](#12-google-analytics)
 13. [SEO dan indexing](#13-seo-dan-indexing)
 14. [Build dan deploy](#14-build-dan-deploy)
@@ -112,7 +112,7 @@ src/
 │   ├── products.ts         # Fungsi untuk mengambil data produk
 │   ├── commerce/           # Checkout ke Peptides Bali + stok & harga (lihat bagian 17)
 │   ├── cart-store.ts       # Isi keranjang (disimpan di browser)
-│   ├── enquiry.ts          # Pemrosesan formulir di server
+│   ├── enquiry.ts          # Validasi formulir & pesan WhatsApp
 │   ├── seo.ts  analytics.ts  whatsapp.ts
 │
 ├── types/product.ts        # Definisi tipe data produk
@@ -447,22 +447,17 @@ produk, pesan otomatis menyebut nama produknya. Klik dicatat di GA4 sebagai `wha
 
 ---
 
-## 11. Formulir enquiry (email)
+## 11. Formulir enquiry (WhatsApp)
 
-Formulir diproses di server (`src/lib/enquiry.ts`) dengan validasi, honeypot anti-spam dan
-pembatasan jumlah kiriman. Pengiriman email memakai [Resend](https://resend.com):
+Formulir di halaman Contact dan halaman produk **tidak mengirim apa pun ke server**. Saat
+pengunjung menekan **Send on WhatsApp**, isian (nama, lokasi, produk, pesan) disusun menjadi
+pesan lalu WhatsApp dibuka ke nomor di `src/data/site.ts` (`wa.me/<nomor>?text=…`).
+Pengunjung tinggal menekan kirim di WhatsApp. Jika WhatsApp tidak terbuka (mis. pop-up
+diblokir), halaman menampilkan tombol **Open WhatsApp** sebagai cadangan.
 
-1. Buat akun Resend, verifikasi domain (mis. `hghbali.com`), buat API key.
-2. Isi variabel lingkungan (di `.env.local` atau dashboard hosting):
-
-```bash
-RESEND_API_KEY=re_xxxxxxxx
-ENQUIRY_TO_EMAIL=tim@contoh.com
-ENQUIRY_FROM_EMAIL="HGH Bali <enquiries@hghbali.com>"
-```
-
-- Mode development tanpa konfigurasi: enquiry hanya dicetak di terminal (tidak dikirim).
-- Mode produksi tanpa konfigurasi: pengunjung melihat pesan error dan diarahkan ke WhatsApp.
+- Validasi dan susunan pesan ada di `src/lib/enquiry.ts`; tampilan di
+  `src/components/forms/EnquiryForm.tsx`.
+- Tidak perlu API key atau variabel lingkungan apa pun.
 - Formulir **tidak** meminta informasi kesehatan dan memperingatkan pengunjung untuk tidak
   mengirimkannya.
 
@@ -476,7 +471,8 @@ Isi `NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX`. Jika kosong, analytics tidak dimuat sama s
 - Fitur iklan dan Google Signals dimatikan.
 - Event yang dikirim (tanpa data pribadi/kesehatan): `product_list_view`,
   `product_detail_view`, `product_category_filter`, `testing_document_view`,
-  `availability_enquiry` dan `contact_form_submit` (hanya setelah formulir berhasil terkirim).
+  `availability_enquiry` dan `contact_form_submit` (saat formulir lolos validasi dan membuka
+  WhatsApp — belum tentu pesannya dikirim).
 - Daftarkan event tersebut sebagai *custom events* di GA4 bila diperlukan.
 
 ---
@@ -584,7 +580,7 @@ seperti PM2.
 - [ ] Biaya pengiriman dikonfirmasi (berbeda dengan peptidesbali.online — lihat audit).
 - [ ] Teks Privacy Policy, Terms, Medical Disclaimer direview penasihat hukum, lalu hapus
       catatan "working draft" di `src/components/layout/LegalPage.tsx`.
-- [ ] Resend dikonfigurasi dan formulir diuji (kirim satu enquiry percobaan).
+- [ ] Formulir diuji: enquiry percobaan masuk ke WhatsApp tim (nomor sudah benar).
 - [ ] GA4 ID diisi (opsional).
 - [ ] `SITE_INDEXING=enabled` di Production; `NEXT_PUBLIC_SITE_URL` benar.
 - [ ] Pemetaan 8 produk ke ID Peptides Bali dikonfirmasi klien (bagian 17), lalu

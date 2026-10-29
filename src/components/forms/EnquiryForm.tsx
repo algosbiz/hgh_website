@@ -1,26 +1,21 @@
 "use client";
 
-import Link from "next/link";
-import { useActionState, useEffect, useId, useRef } from "react";
-import { CheckCircle2, Loader2 } from "lucide-react";
-import { submitEnquiry } from "@/lib/enquiry";
+import { useEffect, useId, useRef, useState, type FormEvent } from "react";
+import { CheckCircle2 } from "lucide-react";
 import {
   ENQUIRY_LIMITS,
-  initialEnquiryState,
+  enquiryWhatsappLink,
+  validateEnquiry,
   type EnquiryField,
-} from "@/lib/enquiry-types";
+  type EnquiryProduct,
+  type EnquiryValues,
+} from "@/lib/enquiry";
 import { trackEvent } from "@/lib/analytics";
-import { buttonClasses } from "@/components/ui/Button";
+import { ButtonLink, buttonClasses } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
 
-export interface ProductOption {
-  id: string;
-  name: string;
-  categoryName: string;
-}
-
 interface EnquiryFormProps {
-  products: ProductOption[];
+  products: EnquiryProduct[];
   /** Pre-selects a product (used on product pages). */
   defaultProductId?: string;
 }
@@ -28,42 +23,66 @@ interface EnquiryFormProps {
 const inputClasses =
   "block w-full rounded-xl border border-line-strong bg-paper px-4 py-3 text-[0.95rem] text-ink placeholder:text-muted/80 transition-colors focus:border-ink focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-deep aria-[invalid=true]:border-status-danger";
 
+function readField(data: FormData, field: EnquiryField, maxLength = 60): string {
+  const value = data.get(field);
+  return typeof value === "string" ? value.trim().slice(0, maxLength) : "";
+}
+
+/**
+ * Enquiry form. On submit it opens WhatsApp with the enquiry written out as
+ * a message; nothing is sent to our server.
+ */
 export function EnquiryForm({ products, defaultProductId }: EnquiryFormProps) {
-  const [state, formAction, pending] = useActionState(
-    submitEnquiry,
-    initialEnquiryState,
-  );
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<EnquiryField, string>>>({});
+  const [values, setValues] = useState<Partial<EnquiryValues>>({});
+  const [whatsappHref, setWhatsappHref] = useState<string | null>(null);
   const baseId = useId();
-  const trackedSubmission = useRef<string | undefined>(undefined);
   const errorSummaryRef = useRef<HTMLDivElement>(null);
+  const hasErrors = Object.keys(fieldErrors).length > 0;
 
   useEffect(() => {
-    if (state.status !== "success" || !state.submissionId) return;
-    if (trackedSubmission.current === state.submissionId) return;
-    trackedSubmission.current = state.submissionId;
+    if (hasErrors) errorSummaryRef.current?.focus();
+  }, [fieldErrors, hasErrors]);
 
-    if (state.analytics?.productId) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const submitted: EnquiryValues = {
+      name: readField(data, "name", ENQUIRY_LIMITS.name),
+      location: readField(data, "location", ENQUIRY_LIMITS.location),
+      product: readField(data, "product") || "general",
+      message: readField(data, "message", ENQUIRY_LIMITS.message),
+    };
+    setValues(submitted);
+
+    const errors = validateEnquiry(submitted, products);
+    setFieldErrors(errors);
+    if (Object.keys(errors).length > 0) return;
+
+    const product = products.find((item) => item.id === submitted.product);
+    const href = enquiryWhatsappLink(submitted, product);
+    // Opened straight from the submit (a user action), so pop-up blockers
+    // allow it. The confirmation below links to it again as a fallback.
+    window.open(href, "_blank", "noopener,noreferrer");
+    setWhatsappHref(href);
+
+    if (product) {
       trackEvent("availability_enquiry", {
-        product_id: state.analytics.productId,
-        product_category: state.analytics.productCategory,
+        product_id: product.id,
+        product_category: product.category,
       });
     } else {
       trackEvent("contact_form_submit", { enquiry_type: "general" });
     }
-  }, [state]);
-
-  useEffect(() => {
-    if (state.status === "error") errorSummaryRef.current?.focus();
-  }, [state]);
+  }
 
   const fieldId = (field: EnquiryField) => `${baseId}-${field}`;
   const errorId = (field: EnquiryField) => `${baseId}-${field}-error`;
-  const errorFor = (field: EnquiryField) => state.fieldErrors[field];
   const describedBy = (field: EnquiryField, hintId?: string) =>
-    [errorFor(field) ? errorId(field) : null, hintId].filter(Boolean).join(" ") ||
+    [fieldErrors[field] ? errorId(field) : null, hintId].filter(Boolean).join(" ") ||
     undefined;
 
-  if (state.status === "success") {
+  if (whatsappHref) {
     return (
       <div
         role="status"
@@ -74,31 +93,44 @@ export function EnquiryForm({ products, defaultProductId }: EnquiryFormProps) {
           className="mx-auto size-10 text-status-success"
           strokeWidth={1.5}
         />
-        <p className="mt-4 font-display text-2xl text-ink">Enquiry sent</p>
+        <p className="mt-4 font-display text-2xl text-ink">Your message is ready in WhatsApp</p>
         <p className="mx-auto mt-3 max-w-md leading-relaxed text-muted">
-          {state.message}
+          Tap send in WhatsApp to reach the Atlas Longevity team. If WhatsApp
+          did not open, use the button below.
         </p>
+        <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <ButtonLink href={whatsappHref} external size="lg">
+            Open WhatsApp
+          </ButtonLink>
+          <button
+            type="button"
+            onClick={() => setWhatsappHref(null)}
+            className={buttonClasses("ghost", "lg")}
+          >
+            Edit enquiry
+          </button>
+        </div>
       </div>
     );
   }
 
-  const selectedProduct = state.values.product ?? defaultProductId ?? "general";
+  const selectedProduct = values.product ?? defaultProductId ?? "general";
 
   return (
-    <form action={formAction} noValidate className="relative grid gap-6">
-      {state.status === "error" ? (
+    <form onSubmit={handleSubmit} noValidate className="grid gap-6">
+      {hasErrors ? (
         <div
           ref={errorSummaryRef}
           tabIndex={-1}
           role="alert"
           className="rounded-xl border border-status-danger/30 bg-status-danger-bg px-4 py-3 text-sm text-status-danger"
         >
-          {state.message}
+          Please check the highlighted fields.
         </div>
       ) : null}
 
       <div className="grid gap-6 sm:grid-cols-2">
-        <Field label="Name" id={fieldId("name")} error={errorFor("name")} errorId={errorId("name")} required>
+        <Field label="Name" id={fieldId("name")} error={fieldErrors.name} errorId={errorId("name")} required>
           <input
             id={fieldId("name")}
             name="name"
@@ -106,8 +138,8 @@ export function EnquiryForm({ products, defaultProductId }: EnquiryFormProps) {
             autoComplete="name"
             required
             maxLength={ENQUIRY_LIMITS.name}
-            defaultValue={state.values.name}
-            aria-invalid={Boolean(errorFor("name"))}
+            defaultValue={values.name}
+            aria-invalid={Boolean(fieldErrors.name)}
             aria-describedby={describedBy("name")}
             className={inputClasses}
           />
@@ -116,7 +148,7 @@ export function EnquiryForm({ products, defaultProductId }: EnquiryFormProps) {
         <Field
           label="Your location"
           id={fieldId("location")}
-          error={errorFor("location")}
+          error={fieldErrors.location}
           errorId={errorId("location")}
           required
         >
@@ -128,54 +160,20 @@ export function EnquiryForm({ products, defaultProductId }: EnquiryFormProps) {
             placeholder="e.g. Canggu, Bali"
             required
             maxLength={ENQUIRY_LIMITS.location}
-            defaultValue={state.values.location}
-            aria-invalid={Boolean(errorFor("location"))}
+            defaultValue={values.location}
+            aria-invalid={Boolean(fieldErrors.location)}
             aria-describedby={describedBy("location")}
             className={inputClasses}
           />
         </Field>
-
-        <Field label="Email" id={fieldId("email")} error={errorFor("email")} errorId={errorId("email")}>
-          <input
-            id={fieldId("email")}
-            name="email"
-            type="email"
-            autoComplete="email"
-            inputMode="email"
-            maxLength={ENQUIRY_LIMITS.email}
-            defaultValue={state.values.email}
-            aria-invalid={Boolean(errorFor("email"))}
-            aria-describedby={describedBy("email", `${baseId}-contact-hint`)}
-            className={inputClasses}
-          />
-        </Field>
-
-        <Field label="WhatsApp / phone" id={fieldId("phone")} error={errorFor("phone")} errorId={errorId("phone")}>
-          <input
-            id={fieldId("phone")}
-            name="phone"
-            type="tel"
-            autoComplete="tel"
-            inputMode="tel"
-            placeholder="+62"
-            maxLength={ENQUIRY_LIMITS.phone}
-            defaultValue={state.values.phone}
-            aria-invalid={Boolean(errorFor("phone"))}
-            aria-describedby={describedBy("phone", `${baseId}-contact-hint`)}
-            className={inputClasses}
-          />
-        </Field>
-        <p id={`${baseId}-contact-hint`} className="-mt-3 text-sm text-muted sm:col-span-2">
-          Provide an email address, a WhatsApp number, or both.
-        </p>
       </div>
 
-      <Field label="Product" id={fieldId("product")} error={errorFor("product")} errorId={errorId("product")}>
+      <Field label="Product" id={fieldId("product")} error={fieldErrors.product} errorId={errorId("product")}>
         <select
           id={fieldId("product")}
           name="product"
           defaultValue={selectedProduct}
-          aria-invalid={Boolean(errorFor("product"))}
+          aria-invalid={Boolean(fieldErrors.product)}
           aria-describedby={describedBy("product")}
           className={cn(inputClasses, "appearance-none bg-[length:1rem] bg-[right_1rem_center] bg-no-repeat pr-10")}
           style={{
@@ -196,7 +194,7 @@ export function EnquiryForm({ products, defaultProductId }: EnquiryFormProps) {
         label="Message"
         optional
         id={fieldId("message")}
-        error={errorFor("message")}
+        error={fieldErrors.message}
         errorId={errorId("message")}
       >
         <textarea
@@ -204,7 +202,7 @@ export function EnquiryForm({ products, defaultProductId }: EnquiryFormProps) {
           name="message"
           rows={5}
           maxLength={ENQUIRY_LIMITS.message}
-          defaultValue={state.values.message}
+          defaultValue={values.message}
           aria-describedby={`${baseId}-message-hint`}
           className={cn(inputClasses, "resize-y")}
         />
@@ -213,57 +211,13 @@ export function EnquiryForm({ products, defaultProductId }: EnquiryFormProps) {
         </p>
       </Field>
 
-      {/* Honeypot field — hidden from people, filled in by spam bots. */}
-      <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
-        <label htmlFor={`${baseId}-website`}>Website</label>
-        <input id={`${baseId}-website`} name="website" type="text" tabIndex={-1} autoComplete="off" />
-      </div>
-
-      <div>
-        <div className="flex items-start gap-3">
-          <input
-            id={fieldId("consent")}
-            name="consent"
-            type="checkbox"
-            value="yes"
-            required
-            aria-invalid={Boolean(errorFor("consent"))}
-            aria-describedby={describedBy("consent")}
-            className="mt-1 size-5 shrink-0 rounded border-line-strong accent-ink"
-          />
-          <label htmlFor={fieldId("consent")} className="text-sm leading-relaxed text-body">
-            I agree to Atlas Longevity using these details to respond to my
-            enquiry, as described in the{" "}
-            <Link href="/privacy-policy/" className="text-ink underline underline-offset-4">
-              Privacy Policy
-            </Link>
-            .
-          </label>
-        </div>
-        {errorFor("consent") ? (
-          <p id={errorId("consent")} className="mt-2 text-sm text-status-danger">
-            {errorFor("consent")}
-          </p>
-        ) : null}
-      </div>
-
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <button
-          type="submit"
-          disabled={pending}
-          className={buttonClasses("primary", "lg", "w-full sm:w-auto")}
-        >
-          {pending ? (
-            <>
-              <Loader2 aria-hidden="true" className="size-4 animate-spin" />
-              Sending…
-            </>
-          ) : (
-            "Send enquiry"
-          )}
+        <button type="submit" className={buttonClasses("primary", "lg", "w-full sm:w-auto")}>
+          Send on WhatsApp
         </button>
-        <p className="text-sm text-muted">
-          This form does not place an order or take payment.
+        <p className="text-sm text-muted sm:max-w-xs sm:text-right">
+          Opens WhatsApp with your message filled in. This form does not place
+          an order or take payment.
         </p>
       </div>
     </form>

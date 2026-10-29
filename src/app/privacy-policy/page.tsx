@@ -15,7 +15,7 @@ export default function PrivacyPolicyPage() {
     <LegalPage
       title="Privacy Policy"
       path="/privacy-policy/"
-      lastUpdated="15 October 2026"
+      lastUpdated="29 October 2026"
       intro="How we collect, use and protect information when you use HGH Bali."
     >
       <h2>Who we are</h2>
@@ -27,11 +27,14 @@ export default function PrivacyPolicyPage() {
       </p>
 
       <h2>Information we collect</h2>
-      <h3>Enquiry form</h3>
-      <p>When you send an enquiry we collect:</p>
+      <h3>Enquiry form and WhatsApp</h3>
+      <p>
+        The enquiry form does not send anything to this website. It prepares
+        a WhatsApp message, which you then send yourself from WhatsApp. When
+        you message us on WhatsApp we receive:
+      </p>
       <ul>
-        <li>your name;</li>
-        <li>your email address and/or WhatsApp number;</li>
+        <li>your name and WhatsApp number;</li>
         <li>your area or city;</li>
         <li>the product you are asking about, and your message.</li>
       </ul>
@@ -58,10 +61,10 @@ export default function PrivacyPolicyPage() {
 
       <h2>Service providers</h2>
       <p>
-        We use trusted providers to run this website: website hosting, an email
-        delivery service to forward enquiries to our team, and Google Analytics
-        (only if you consent). If you contact us via WhatsApp, WhatsApp’s own
-        privacy terms also apply.
+        We use trusted providers to run this website: website hosting,
+        WhatsApp for enquiries, and Google Analytics (only if you consent).
+        When you contact us via WhatsApp, WhatsApp’s own privacy terms also
+        apply.
       </p>
 
       <h2>Retention</h2>

@@ -45,9 +45,10 @@ export default function ContactPage() {
           <aside className="space-y-6 lg:col-span-5">
             <div className="rounded-[1.75rem] bg-ink p-7 text-cream sm:p-9">
               <MessageCircle aria-hidden="true" className="size-6 text-gold-bright" strokeWidth={1.4} />
-              <h2 className="mt-5 font-display text-2xl font-normal text-cream">Prefer WhatsApp?</h2>
+              <h2 className="mt-5 font-display text-2xl font-normal text-cream">Chat with us directly</h2>
               <p className="mt-2 leading-relaxed text-cream/75">
-                Message the Atlas Longevity team on {site.contact.whatsappDisplay}.
+                Prefer to write your own message? WhatsApp the Atlas Longevity
+                team on {site.contact.whatsappDisplay}.
               </p>
               <ButtonLink href={whatsappLink()} external variant="light" className="mt-6">
                 Open WhatsApp
@@ -81,7 +82,7 @@ export default function ContactPage() {
               <ShieldCheck aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-gold-deep" strokeWidth={1.5} />
               <p className="text-sm leading-relaxed text-body">
                 Please do not share medical history or other health information
-                through this website. Questions about suitability should be
+                in your enquiry or on WhatsApp. Questions about suitability should be
                 discussed with a qualified healthcare professional.
               </p>
             </div>

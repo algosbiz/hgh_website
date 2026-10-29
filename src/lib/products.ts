@@ -59,6 +59,7 @@ export function getProductOptions() {
   return products.map((product) => ({
     id: product.id,
     name: product.name,
+    category: product.category,
     categoryName: categories[product.category].name,
   }));
 }
