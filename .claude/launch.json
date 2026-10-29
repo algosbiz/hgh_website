@@ -6,6 +6,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 3005
+    },
+    {
+      "name": "hgh-bali-prod",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["next", "start", "-p", "3006"],
+      "port": 3006
     }
   ]
 }

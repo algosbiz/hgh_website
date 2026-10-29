@@ -11,7 +11,7 @@ import { whatsappLink } from "@/lib/whatsapp";
 export const metadata = buildMetadata({
   title: "Contact — Product & Availability Enquiries",
   description:
-    "Contact Atlas Longevity about HGH Bali products, batch documentation, current availability and delivery in Bali and Indonesia.",
+    "Contact HGH Bali by Atlas Longevity on WhatsApp or by enquiry form about products, availability, batch documentation and delivery in Bali and Indonesia.",
   path: "/contact/",
 });
 

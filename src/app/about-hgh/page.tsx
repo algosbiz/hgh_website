@@ -8,9 +8,9 @@ import { listedProduct } from "@/data/listed-product";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata = buildMetadata({
-  title: "About HGH — What Is Somatropin?",
+  title: "What Is HGH? Somatropin & Growth Hormone Basics",
   description:
-    "Factual information about somatropin (human growth hormone), its medical context and important safety information, from HGH Bali by Atlas Longevity.",
+    "What HGH (somatropin, human growth hormone) is, how it is used medically and key safety information. Factual context from HGH Bali, not medical advice.",
   path: "/about-hgh/",
 });
 
@@ -62,8 +62,8 @@ export default function AboutHghPage() {
       <PageHeader
         breadcrumbs={[{ label: "About HGH", href: "/about-hgh/" }]}
         eyebrow="About HGH"
-        title="What is somatropin?"
-        intro="Somatropin is a manufactured form of human growth hormone. This page explains the basics factually — it is not medical advice."
+        title="What is HGH (somatropin)?"
+        intro="Somatropin is a manufactured form of human growth hormone (HGH). This page explains the basics factually — it is not medical advice."
       />
 
       <section aria-label="About somatropin" className="py-14 sm:py-20">

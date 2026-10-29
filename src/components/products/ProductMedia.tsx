@@ -27,7 +27,7 @@ export function ProductMedia({ product }: { product: Product }) {
           category={product.category}
           variant="square"
           sizes="(min-width: 1024px) 40rem, 100vw"
-          preload
+          eager
         />
       </div>
       {isIllustrative ? (

@@ -7,9 +7,9 @@ import { allFaqs, faqGroups } from "@/data/faqs";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata = buildMetadata({
-  title: "Frequently Asked Questions — HGH in Bali & Indonesia",
+  title: "HGH FAQs — Products, Testing & Delivery in Bali",
   description:
-    "Answers about the HGH Bali catalogue, batch testing, delivery in Bali and Indonesia, and how enquiries work.",
+    "Answers about HGH Bali: somatropin pens, vials and boxes, batch testing records, delivery fees in Bali and Indonesia, and how ordering works.",
   path: "/faq/",
 });
 
@@ -29,7 +29,7 @@ export default function FaqPage() {
       <PageHeader
         breadcrumbs={[{ label: "FAQs", href: "/faq/" }]}
         eyebrow="FAQs"
-        title="Frequently asked questions"
+        title="HGH Bali FAQs"
         intro="About the catalogue, testing, delivery and enquiries. Can’t find your answer? Send us an enquiry."
       />
 

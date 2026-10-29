@@ -37,3 +37,18 @@ export const statusInfo: Record<
       "This listing has passed the publication and compliance review for its permitted functionality.",
   },
 };
+
+/**
+ * Statuses shown without a badge. The same "pending" badge on every card tells
+ * buyers nothing (the old hghbali.com showed none); what is still pending stays
+ * visible in each product's Documentation section and on /testing/.
+ */
+const statusesWithoutBadge: ReadonlySet<ProductStatus> = new Set([
+  "draft",
+  "documentation-pending",
+]);
+
+/** Whether cards, product pages and the status legend show this status. */
+export function showsStatusBadge(status: ProductStatus): boolean {
+  return !statusesWithoutBadge.has(status);
+}

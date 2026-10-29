@@ -25,7 +25,7 @@ export function ProductGallery({ images, category, productName }: ProductGallery
           category={category}
           variant="square"
           sizes="(min-width: 1024px) 40rem, 100vw"
-          preload
+          eager
         />
       </div>
 

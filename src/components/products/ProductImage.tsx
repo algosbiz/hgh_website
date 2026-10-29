@@ -9,7 +9,12 @@ interface ProductImageProps {
   sizes: string;
   /** Which illustrative render to use when there is no product photo. */
   variant?: "wide" | "square";
-  preload?: boolean;
+  /**
+   * For the image most likely to be the Largest Contentful Paint (the main
+   * product photo, the first catalogue card): load it straight away with high
+   * fetch priority instead of lazily.
+   */
+  eager?: boolean;
   className?: string;
   /** Show the "Illustrative image" label on the fallback render. */
   showIllustrativeLabel?: boolean;
@@ -24,7 +29,7 @@ export function ProductImage({
   category,
   sizes,
   variant = "wide",
-  preload = false,
+  eager = false,
   className,
   showIllustrativeLabel = true,
 }: ProductImageProps) {
@@ -38,7 +43,8 @@ export function ProductImage({
           alt={image.alt}
           fill
           sizes={sizes}
-          preload={preload}
+          loading={eager ? "eager" : "lazy"}
+          fetchPriority={eager ? "high" : undefined}
           className={cn("object-contain p-6", className)}
         />
       </>
@@ -54,7 +60,8 @@ export function ProductImage({
         alt={illustration.alt}
         fill
         sizes={sizes}
-        preload={preload}
+        loading={eager ? "eager" : "lazy"}
+        fetchPriority={eager ? "high" : undefined}
         className={cn("object-cover", className)}
       />
       {showIllustrativeLabel ? <IllustrativeLabel /> : null}

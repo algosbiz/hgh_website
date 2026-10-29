@@ -8,9 +8,9 @@ import { buildMetadata } from "@/lib/seo";
 import { whatsappLink } from "@/lib/whatsapp";
 
 export const metadata = buildMetadata({
-  title: "Delivery in Bali & Indonesia",
+  title: "HGH Delivery in Bali & Indonesia — Areas & Fees",
   description:
-    "Delivery-only service across Bali, including Canggu, Seminyak, Ubud, Sanur, Uluwatu and Nusa Dua, with enquiries welcome from across Indonesia.",
+    "Discreet HGH Bali delivery across Canggu, Seminyak, Ubud, Sanur, Uluwatu and Nusa Dua, with fees listed and enquiries welcome from across Indonesia.",
   path: "/delivery/",
 });
 

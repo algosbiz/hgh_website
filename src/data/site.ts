@@ -8,7 +8,7 @@ export const site = {
   legalName: "Atlas Longevity",
   tagline: "Somatropin HGH product information & enquiries — Bali & Indonesia",
   description:
-    "HGH Bali by Atlas Longevity: product catalogue, labelled specifications, packaging details and batch testing documentation for HGH boxes, single vials and pens in Bali and Indonesia.",
+    "HGH Bali by Atlas Longevity: somatropin (human growth hormone) pens, vials and boxes with labelled specifications, prices, batch records and Bali delivery.",
   defaultUrl: "https://hghbali.com",
   // Atlas Longevity HGH Bali logo (client, 18 October 2026), white background
   // removed and trimmed. Used in the header and footer; the favicon, Apple

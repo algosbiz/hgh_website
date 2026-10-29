@@ -22,11 +22,13 @@ import { productPageFaqs } from "@/data/faqs";
 import { products } from "@/data/products";
 import { getProductAction } from "@/lib/commerce";
 import { peptidesBali } from "@/lib/commerce/peptides-bali";
-import { statusInfo } from "@/lib/product-status";
+import { getDestinationProducts } from "@/lib/commerce/stock";
+import { showsStatusBadge, statusInfo } from "@/lib/product-status";
 import {
   getCatalogueNumber,
   getDisplayPrice,
   getProductBySlug,
+  getProductJsonLd,
   getProductOptions,
   getRelatedProducts,
   isIndexableProduct,
@@ -46,20 +48,16 @@ export async function generateMetadata({
   const product = getProductBySlug(slug);
   if (!product) return {};
 
-  const metadata = buildMetadata({
+  const image = product.images[0];
+  return buildMetadata({
     title: product.seo.title,
     description: product.seo.description,
     path: `/products/${product.slug}/`,
     index: isIndexableProduct(product),
+    image: image
+      ? { url: image.src, width: image.width, height: image.height, alt: image.alt }
+      : undefined,
   });
-  const image = product.images[0];
-  if (image) {
-    metadata.openGraph = {
-      ...metadata.openGraph,
-      images: [{ url: image.src, width: image.width, height: image.height, alt: image.alt }],
-    };
-  }
-  return metadata;
 }
 
 const documentTypeLabels: Record<DocumentType, string> = {
@@ -116,6 +114,7 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
   const action = getProductAction(product);
   const related = getRelatedProducts(product);
   const faqs = [...product.faqs, ...productPageFaqs];
+  const productJsonLd = getProductJsonLd(product, await getDestinationProducts());
 
   return (
     <>
@@ -148,12 +147,14 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
               {product.name}
             </h1>
 
-            <div className="mt-6 flex flex-col items-start gap-2">
-              <StatusBadge status={product.status} />
-              <p className="text-sm leading-relaxed text-muted">
-                {statusInfo[product.status].description}
-              </p>
-            </div>
+            {showsStatusBadge(product.status) ? (
+              <div className="mt-6 flex flex-col items-start gap-2">
+                <StatusBadge status={product.status} />
+                <p className="text-sm leading-relaxed text-muted">
+                  {statusInfo[product.status].description}
+                </p>
+              </div>
+            ) : null}
 
             <p className="mt-6 text-[1.0625rem] leading-relaxed text-body">
               {product.shortDescription}
@@ -365,6 +366,10 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
         </section>
       ) : null}
 
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
       <TrackEvent
         name="product_detail_view"
         params={{

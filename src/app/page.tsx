@@ -14,7 +14,7 @@ import { site } from "@/data/site";
 import { testingRecords } from "@/data/testing";
 import { getAllProducts, toCatalogueItems } from "@/lib/products";
 
-const homeTitle = "HGH Bali | Somatropin Product Information & Specifications";
+const homeTitle = "HGH Bali | Somatropin HGH Pens, Vials & Boxes in Bali";
 
 export const metadata: Metadata = {
   title: { absolute: homeTitle },

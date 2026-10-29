@@ -40,12 +40,11 @@ const frauncesItalic = Fraunces({
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "HGH Bali | Somatropin Product Information & Specifications",
+    default: "HGH Bali | Somatropin HGH Pens, Vials & Boxes in Bali",
     template: `%s | ${site.name}`,
   },
   description: site.description,
   applicationName: site.name,
-  alternates: { canonical: "/" },
   openGraph: {
     siteName: `${site.name} by ${site.legalName}`,
     locale: "en_US",
@@ -62,12 +61,34 @@ export const viewport: Viewport = {
   themeColor: "#fbf8f2",
 };
 
-const organizationJsonLd = {
+// WebSite gives search engines the site name ("HGH Bali") shown in results.
+const siteJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  name: site.legalName,
-  url: siteUrl,
-  logo: `${siteUrl}${site.logo.src}`,
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${siteUrl}/#organization`,
+      name: site.legalName,
+      url: siteUrl,
+      logo: `${siteUrl}${site.logo.src}`,
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "customer service",
+        telephone: `+${site.contact.whatsappNumber}`,
+        areaServed: "ID",
+        availableLanguage: "en",
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      name: site.name,
+      alternateName: `${site.name} by ${site.legalName}`,
+      url: `${siteUrl}/`,
+      inLanguage: "en",
+      publisher: { "@id": `${siteUrl}/#organization` },
+    },
+  ],
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
@@ -101,7 +122,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         {gaId ? <Analytics gaId={gaId} /> : null}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
         />
       </body>
     </html>

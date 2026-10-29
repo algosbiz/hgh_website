@@ -5,6 +5,7 @@ import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { ProductPrice } from "@/components/cart/ProductPrice";
 import { categories } from "@/data/categories";
 import { getProductAction } from "@/lib/commerce";
+import { showsStatusBadge } from "@/lib/product-status";
 import { getDisplayPrice } from "@/lib/products";
 import { ProductImage } from "./ProductImage";
 import { SpecList } from "./SpecList";
@@ -15,12 +16,15 @@ interface ProductCardProps {
   /** Catalogue index, e.g. "001". */
   number: string;
   headingLevel?: "h2" | "h3";
+  /** Load the photo straight away (the first card on catalogue pages). */
+  eager?: boolean;
 }
 
 export function ProductCard({
   product,
   number,
   headingLevel: Heading = "h3",
+  eager = false,
 }: ProductCardProps) {
   const href = `/products/${product.slug}/`;
   const action = getProductAction(product);
@@ -32,11 +36,14 @@ export function ProductCard({
           image={product.images[0]}
           category={product.category}
           sizes="(min-width: 1280px) 25rem, (min-width: 1024px) 31vw, (min-width: 640px) 46vw, 92vw"
+          eager={eager}
           className="transition-transform duration-500 ease-soft motion-safe:group-hover:scale-[1.03]"
         />
-        <div className="absolute top-4 left-4">
-          <StatusBadge status={product.status} />
-        </div>
+        {showsStatusBadge(product.status) ? (
+          <div className="absolute top-4 left-4">
+            <StatusBadge status={product.status} />
+          </div>
+        ) : null}
         <span
           aria-hidden="true"
           className="absolute top-4 right-4 font-display text-sm text-muted tabular-nums"

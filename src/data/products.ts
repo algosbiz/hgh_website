@@ -23,7 +23,7 @@ export const products: Product[] = [
     slug: "hgh-somatropin-100iu-box",
     name: "HGH Somatropin 100 IU Box",
     category: "hgh-boxes",
-    status: "draft",
+    status: "documentation-pending",
     shortDescription:
       "Atlas Longevity box with 10 HGH vials of 10 IU each — 100 IU in total.",
     description: [
@@ -76,9 +76,9 @@ export const products: Product[] = [
       mappingConfirmed: true,
     },
     seo: {
-      title: "HGH Somatropin 100 IU Box — Product Information",
+      title: "HGH Somatropin 100 IU Box — Price & Specs",
       description:
-        "HGH Somatropin 100 IU box (10 vials × 10 IU) in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and price.",
+        "HGH Somatropin 100 IU box by Atlas Longevity: 10 × 10 IU vials with bacteriostatic water. Price, labelled specifications and delivery in Bali.",
     },
   },
   {
@@ -86,7 +86,7 @@ export const products: Product[] = [
     slug: "hgh-somatropin-180iu-box",
     name: "HGH Somatropin 180 IU Box",
     category: "hgh-boxes",
-    status: "draft",
+    status: "documentation-pending",
     shortDescription:
       "Atlas Longevity box with 5 HGH vials of 36 IU each — 180 IU in total.",
     description: [
@@ -139,9 +139,9 @@ export const products: Product[] = [
       mappingConfirmed: true,
     },
     seo: {
-      title: "HGH Somatropin 180 IU Box — Product Information",
+      title: "HGH Somatropin 180 IU Box — Price & Specs",
       description:
-        "HGH Somatropin 180 IU box (5 vials × 36 IU) in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and price.",
+        "HGH Somatropin 180 IU box by Atlas Longevity: 5 × 36 IU vials with bacteriostatic water. Price, labelled specifications and delivery in Bali.",
     },
   },
 
@@ -153,7 +153,7 @@ export const products: Product[] = [
     slug: "hgh-10iu-vial",
     name: "HGH 10 IU Vial",
     category: "single-vials",
-    status: "draft",
+    status: "documentation-pending",
     shortDescription: "A single Atlas Longevity HGH vial labelled 10 IU.",
     description: [
       "A single HGH vial labelled 10 IU, presented under the Atlas Longevity label.",
@@ -205,9 +205,9 @@ export const products: Product[] = [
       mappingConfirmed: true,
     },
     seo: {
-      title: "HGH 10 IU Vial — Product Information",
+      title: "HGH 10 IU Vial — Price & Specifications",
       description:
-        "Single HGH vial labelled 10 IU in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and price.",
+        "Single HGH Somatropin vial labelled 10 IU by Atlas Longevity: price, labelled specifications, packaging details and delivery in Bali.",
     },
   },
   {
@@ -215,7 +215,7 @@ export const products: Product[] = [
     slug: "hgh-24iu-vial",
     name: "HGH 24 IU Vial",
     category: "single-vials",
-    status: "draft",
+    status: "documentation-pending",
     shortDescription: "A single Atlas Longevity HGH vial labelled 24 IU.",
     description: [
       "A single HGH vial labelled 24 IU, presented under the Atlas Longevity label.",
@@ -267,9 +267,9 @@ export const products: Product[] = [
       mappingConfirmed: true,
     },
     seo: {
-      title: "HGH 24 IU Vial — Product Information",
+      title: "HGH 24 IU Vial — Price & Specifications",
       description:
-        "Single HGH vial labelled 24 IU in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and price.",
+        "Single HGH Somatropin vial labelled 24 IU by Atlas Longevity: price, labelled specifications, packaging details and delivery in Bali.",
     },
   },
   {
@@ -277,7 +277,7 @@ export const products: Product[] = [
     slug: "hgh-36iu-vial",
     name: "HGH 36 IU Vial",
     category: "single-vials",
-    status: "draft",
+    status: "documentation-pending",
     shortDescription: "A single Atlas Longevity HGH vial labelled 36 IU.",
     description: [
       "A single HGH vial labelled 36 IU, presented under the Atlas Longevity label.",
@@ -329,9 +329,9 @@ export const products: Product[] = [
       mappingConfirmed: true,
     },
     seo: {
-      title: "HGH 36 IU Vial — Product Information",
+      title: "HGH 36 IU Vial — Price & Specifications",
       description:
-        "Single HGH vial labelled 36 IU in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and price.",
+        "Single HGH Somatropin vial labelled 36 IU by Atlas Longevity: price, labelled specifications, packaging details and delivery in Bali.",
     },
   },
 
@@ -345,7 +345,7 @@ export const products: Product[] = [
     slug: "hgh-somatropin-pen-10iu",
     name: "HGH Somatropin Pen 10 IU",
     category: "pens",
-    status: "draft",
+    status: "documentation-pending",
     shortDescription:
       "HGH Somatropin 10 IU as a prefilled disposable pen, a reusable pen or a replacement cartridge.",
     description: [
@@ -419,9 +419,9 @@ export const products: Product[] = [
       ],
     },
     seo: {
-      title: "HGH Somatropin Pen 10 IU — Product Information",
+      title: "HGH Somatropin Pen 10 IU — Price & Specs",
       description:
-        "HGH Somatropin 10 IU as a disposable pen, reusable pen or cartridge in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and prices.",
+        "HGH Somatropin 10 IU by Atlas Longevity as a disposable pen, reusable pen or cartridge: prices, labelled specifications and delivery in Bali.",
     },
   },
   {
@@ -429,7 +429,7 @@ export const products: Product[] = [
     slug: "hgh-somatropin-pen-24iu",
     name: "HGH Somatropin Pen 24 IU",
     category: "pens",
-    status: "draft",
+    status: "documentation-pending",
     shortDescription:
       "HGH Somatropin 24 IU as a prefilled disposable pen, a reusable pen or a replacement cartridge.",
     description: [
@@ -503,9 +503,9 @@ export const products: Product[] = [
       ],
     },
     seo: {
-      title: "HGH Somatropin Pen 24 IU — Product Information",
+      title: "HGH Somatropin Pen 24 IU — Price & Specs",
       description:
-        "HGH Somatropin 24 IU as a disposable pen, reusable pen or cartridge in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and prices.",
+        "HGH Somatropin 24 IU by Atlas Longevity as a disposable pen, reusable pen or cartridge: prices, labelled specifications and delivery in Bali.",
     },
   },
   {
@@ -513,7 +513,7 @@ export const products: Product[] = [
     slug: "hgh-somatropin-pen-36iu",
     name: "HGH Somatropin Pen 36 IU",
     category: "pens",
-    status: "draft",
+    status: "documentation-pending",
     shortDescription:
       "HGH Somatropin 36 IU as a prefilled disposable pen, a reusable pen or a replacement cartridge.",
     description: [
@@ -587,9 +587,9 @@ export const products: Product[] = [
       ],
     },
     seo: {
-      title: "HGH Somatropin Pen 36 IU — Product Information",
+      title: "HGH Somatropin Pen 36 IU — Price & Specs",
       description:
-        "HGH Somatropin 36 IU as a disposable pen, reusable pen or cartridge in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and prices.",
+        "HGH Somatropin 36 IU by Atlas Longevity as a disposable pen, reusable pen or cartridge: prices, labelled specifications and delivery in Bali.",
     },
   },
   {
@@ -597,7 +597,7 @@ export const products: Product[] = [
     slug: "hgh-somatropin-pen-72iu",
     name: "HGH Somatropin Pen 72 IU",
     category: "pens",
-    status: "draft",
+    status: "documentation-pending",
     shortDescription:
       "HGH Somatropin 72 IU as a prefilled disposable pen, a reusable pen or a replacement cartridge.",
     description: [
@@ -671,9 +671,9 @@ export const products: Product[] = [
       ],
     },
     seo: {
-      title: "HGH Somatropin Pen 72 IU — Product Information",
+      title: "HGH Somatropin Pen 72 IU — Price & Specs",
       description:
-        "HGH Somatropin 72 IU as a disposable pen, reusable pen or cartridge in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and prices.",
+        "HGH Somatropin 72 IU by Atlas Longevity as a disposable pen, reusable pen or cartridge: prices, labelled specifications and delivery in Bali.",
     },
   },
   {
@@ -681,7 +681,7 @@ export const products: Product[] = [
     slug: "hgh-somatropin-pen-108iu",
     name: "HGH Somatropin Pen 108 IU",
     category: "pens",
-    status: "draft",
+    status: "documentation-pending",
     shortDescription:
       "HGH Somatropin 108 IU as a prefilled disposable pen, a reusable pen or a replacement cartridge.",
     description: [
@@ -755,9 +755,9 @@ export const products: Product[] = [
       ],
     },
     seo: {
-      title: "HGH Somatropin Pen 108 IU — Product Information",
+      title: "HGH Somatropin Pen 108 IU — Price & Specs",
       description:
-        "HGH Somatropin 108 IU as a disposable pen, reusable pen or cartridge in the HGH Bali catalogue by Atlas Longevity: labelled specifications, packaging details and prices.",
+        "HGH Somatropin 108 IU by Atlas Longevity as a disposable pen, reusable pen or cartridge: prices, labelled specifications and delivery in Bali.",
     },
   },
 ];

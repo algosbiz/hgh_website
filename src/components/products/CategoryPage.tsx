@@ -21,7 +21,7 @@ export function CategoryPage({ category }: { category: ProductCategory }) {
           { label: info.name, href: info.href },
         ]}
         eyebrow={`${products.length} ${info.optionLabel}`}
-        title={info.name}
+        title={info.heading}
         intro={info.description}
       >
         <CategoryNav current={category} />
@@ -29,7 +29,7 @@ export function CategoryPage({ category }: { category: ProductCategory }) {
 
       <section aria-label={info.name} className="py-14 sm:py-20">
         <Container>
-          <ProductGrid items={toCatalogueItems(products)} headingLevel="h2" />
+          <ProductGrid items={toCatalogueItems(products)} headingLevel="h2" eagerFirst />
           <p className="mt-10 max-w-3xl text-sm leading-relaxed text-muted">
             Products are grouped by presentation for easier browsing. Products
             within a category are not medically interchangeable — suitability

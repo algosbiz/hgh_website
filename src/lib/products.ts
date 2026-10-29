@@ -2,9 +2,11 @@ import fs from "node:fs";
 import path from "node:path";
 import { categories } from "@/data/categories";
 import { products } from "@/data/products";
+import { site } from "@/data/site";
 import { getProductAction } from "@/lib/commerce";
 import { getCheckoutOptions } from "@/lib/commerce/peptides-bali";
 import type { DestinationMap } from "@/lib/commerce/stock";
+import { absoluteUrl } from "@/lib/seo";
 import type { CartCatalogueItem } from "@/types/cart";
 import type {
   CatalogueItem,
@@ -104,6 +106,58 @@ export function getCartCatalogue(destination: DestinationMap): CartCatalogueItem
       };
     });
   });
+}
+
+const availability = (inStock: boolean) =>
+  inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock";
+
+/**
+ * schema.org Product data for a product page, with the prices shown on the
+ * page: the live Peptides Bali price per variant when the product is sold
+ * through the cart, otherwise the approved display price.
+ */
+export function getProductJsonLd(product: Product, destination: DestinationMap) {
+  const url = absoluteUrl(`/products/${product.slug}/`);
+  const image = product.images[0] ?? categories[product.category].illustration.square;
+  const options = getCartCatalogue(destination).flatMap((item) =>
+    item.productId === product.id && item.price !== null
+      ? [{ price: item.price, inStock: item.inStock }]
+      : [],
+  );
+  const displayPrice = getDisplayPrice(product);
+  if (options.length === 0 && displayPrice !== null) {
+    options.push({ price: displayPrice, inStock: null });
+  }
+
+  const known = options.flatMap(({ inStock }) => (inStock === null ? [] : [inStock]));
+  const stock = known.length > 0 ? { availability: availability(known.some(Boolean)) } : {};
+  const prices = options.map(({ price }) => price);
+  const offers =
+    options.length === 0
+      ? undefined
+      : options.length === 1
+        ? { "@type": "Offer", price: prices[0], priceCurrency: "IDR", url, ...stock }
+        : {
+            "@type": "AggregateOffer",
+            lowPrice: Math.min(...prices),
+            highPrice: Math.max(...prices),
+            offerCount: options.length,
+            priceCurrency: "IDR",
+            ...stock,
+          };
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.shortDescription,
+    image: absoluteUrl(image.src),
+    sku: product.id,
+    category: categories[product.category].name,
+    brand: { "@type": "Brand", name: site.legalName },
+    url,
+    ...(offers ? { offers } : {}),
+  };
 }
 
 /** Draft products are visible in the catalogue but are not indexed. */

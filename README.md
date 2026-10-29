@@ -15,6 +15,8 @@ Dokumen lain:
   informasi yang masih dibutuhkan dari klien.
 - [`docs/commerce-feasibility.md`](docs/commerce-feasibility.md) — studi kelayakan integrasi
   Peptides Bali.
+- [`docs/seo-audit.md`](docs/seo-audit.md) — audit SEO & PageSpeed (before/after),
+  riset kata kunci, dan rekomendasi lanjutan.
 
 ---
 
@@ -305,8 +307,10 @@ formulir enquiry **terbarui otomatis**.
 
 Yang perlu diubah manual: deskripsi singkat jumlah produk di menu dropdown
 (`"The full catalogue of ten options"`, `"Two boxed options"`, `"Three single vial options"`,
-`"Five pen options"`) pada `src/data/site.ts`, dan jawaban FAQ "What products does HGH Bali
-list?" di `src/data/faqs.ts`.
+`"Five pen options"`) pada `src/data/site.ts`, jawaban FAQ "What products does HGH Bali
+list?" di `src/data/faqs.ts`, serta `seoTitle`/`seoDescription` kategori di
+`src/data/categories.ts` yang menyebut ukuran IU (mis. "100 IU & 180 IU"), dan
+deskripsi halaman `/products/` ("from 10 to 180 IU") di `src/app/products/page.tsx`.
 
 **Menambah kategori baru** memerlukan perubahan kode kecil: tambahkan nilai baru di
 `ProductCategory` (`src/types/product.ts`), di `categories` (termasuk `illustration`) dan
@@ -319,18 +323,27 @@ tautannya di `src/data/site.ts`, `src/components/layout/Footer.tsx` dan `src/app
 
 ## 6. Status produk
 
-| Status                    | Tampil sebagai          | Arti                                                  | Diindex Google? |
-| ------------------------- | ----------------------- | ----------------------------------------------------- | --------------- |
-| `draft`                   | Details pending         | Informasi belum lengkap                               | Tidak           |
-| `information-only`        | Information only        | Ditampilkan untuk informasi katalog                   | Ya              |
-| `verification-required`   | Verification required   | Perlu verifikasi kelayakan/otorisasi                  | Ya              |
-| `unavailable`             | Unavailable             | Sedang tidak tersedia                                 | Ya              |
-| `documentation-pending`   | Documentation pending   | Dokumen testing/regulasi belum lengkap                | Ya              |
-| `approved`                | Approved listing        | Lolos review publikasi & kepatuhan                    | Ya              |
+| Status                    | Badge                    | Arti                                                  | Diindex Google? |
+| ------------------------- | ------------------------ | ----------------------------------------------------- | --------------- |
+| `draft`                   | — (tidak tampil)         | Informasi belum lengkap                               | Tidak           |
+| `information-only`        | Information only         | Ditampilkan untuk informasi katalog                   | Ya              |
+| `verification-required`   | Verification required    | Perlu verifikasi kelayakan/otorisasi                  | Ya              |
+| `unavailable`             | Unavailable              | Sedang tidak tersedia                                 | Ya              |
+| `documentation-pending`   | — (tidak tampil)         | Dokumen testing/regulasi belum lengkap                | Ya              |
+| `approved`                | Approved listing         | Lolos review publikasi & kepatuhan                    | Ya              |
 
-Status **bukan** klaim kualitas. Saat ini kedelapan produk berstatus `draft`, sehingga
-halaman detailnya diberi `noindex` dan tidak masuk sitemap. Ganti status setelah data
-produk dikonfirmasi.
+Badge tampil di pojok kartu produk dan di bawah judul halaman produk; legenda status di
+`/products/` hanya muncul untuk status yang punya badge. Badge untuk `draft` dan
+`documentation-pending` sengaja disembunyikan (29 Okt 2026, seperti hghbali.com lama):
+badge "pending" yang sama di semua kartu tidak membantu pembeli, dan dokumen yang belum ada
+tetap terlihat "Pending" di bagian Documentation produk dan di `/testing/`. Diatur di
+`statusesWithoutBadge` (`src/lib/product-status.ts`).
+
+Status **bukan** klaim kualitas. Sejak 29 Oktober 2026 kesepuluh produk berstatus
+`documentation-pending` (sebelumnya `draft`): nama, foto, harga dan stok sudah terisi,
+tetapi COA dan dokumen produsen belum. Halaman produk diindex dan masuk sitemap. Setelah
+dokumen tersedia, ganti ke `information-only` atau `approved`. Status `draft` membuat
+halaman `noindex` — pakai hanya untuk produk yang datanya belum siap.
 
 Status tidak memengaruhi keranjang, kecuali `unavailable`: produk dengan status itu (atau
 tanpa ID Peptides Bali) hanya menampilkan tombol enquiry — lihat bagian 17.
@@ -472,6 +485,18 @@ Isi `NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX`. Jika kosong, analytics tidak dimuat sama s
 
 - Judul, deskripsi, canonical, OpenGraph, breadcrumb (JSON-LD), sitemap (`/sitemap.xml`)
   dan `robots.txt` dibuat otomatis.
+- Judul dan deskripsi per halaman: `buildMetadata(...)` di tiap `page.tsx`; produk di
+  `seo` (`src/data/products.ts`), kategori di `seoTitle`/`seoDescription`
+  (`src/data/categories.ts`). Panduan: judul ≤ 60 karakter termasuk akhiran " | HGH Bali",
+  deskripsi 120–155 karakter, sebut kata kunci utama (HGH, Somatropin, ukuran IU, Bali)
+  tanpa klaim medis.
+- Gambar share: halaman produk memakai foto produk pertama; halaman lain memakai
+  `src/app/opengraph-image.png` (lihat `defaultShareImage` di `src/lib/seo.ts`).
+- Structured data (JSON-LD): `Organization` + `WebSite` di semua halaman, `BreadcrumbList`
+  di halaman dalam, `FAQPage` di `/faq/`, dan `Product` (harga live + stok dari Peptides
+  Bali) di halaman produk. Cek dengan <https://search.google.com/test/rich-results>.
+- **Halaman produk berstatus `draft` diberi `noindex`** dan tidak masuk sitemap (bagian 6).
+  Status lain diindex.
 - **Indexing mati secara default.** Mesin pencari hanya boleh mengindex jika
   `SITE_INDEXING=enabled` **dan** bukan deployment preview Vercel. Jadi staging/preview tidak
   akan pernah diindex.
@@ -536,7 +561,7 @@ seperti PM2.
 ## 16. Checklist sebelum launch
 
 - [ ] Nama, foto, spesifikasi, kemasan dan produsen 8 produk sudah dikonfirmasi klien.
-- [ ] Status produk diperbarui dari `draft`.
+- [x] Status produk diperbarui dari `draft` (→ `documentation-pending`, 29 Okt 2026).
 - [ ] Data testing/sertifikat diperbarui (atau tetap jelas "Pending").
 - [ ] Nomor WhatsApp & email resmi dikonfirmasi (`src/data/site.ts`).
 - [ ] Biaya pengiriman dikonfirmasi (berbeda dengan peptidesbali.online — lihat audit).

@@ -19,6 +19,25 @@ export function absoluteUrl(pathname: string): string {
   return `${siteUrl}${pathname.startsWith("/") ? pathname : `/${pathname}`}`;
 }
 
+interface ShareImage {
+  url: string;
+  width: number;
+  height: number;
+  alt: string;
+}
+
+/**
+ * The site-wide share image (`src/app/opengraph-image.png`). A page that sets
+ * its own `openGraph` replaces the root one, file image included, so every
+ * page built with `buildMetadata` names it again.
+ */
+export const defaultShareImage: ShareImage = {
+  url: "/opengraph-image.png",
+  width: 1200,
+  height: 630,
+  alt: "HGH Bali - Product Information and Specifications by Atlas Longevity",
+};
+
 interface PageMetadataInput {
   title: string;
   description: string;
@@ -26,6 +45,8 @@ interface PageMetadataInput {
   path: string;
   /** Set to false to keep a page out of search results. */
   index?: boolean;
+  /** Share image for WhatsApp, Facebook and X; defaults to the site image. */
+  image?: ShareImage;
 }
 
 export function buildMetadata({
@@ -33,6 +54,7 @@ export function buildMetadata({
   description,
   path,
   index = true,
+  image = defaultShareImage,
 }: PageMetadataInput): Metadata {
   return {
     title,
@@ -43,11 +65,13 @@ export function buildMetadata({
       description,
       url: path,
       type: "website",
+      images: [image],
     },
     twitter: {
       card: "summary_large_image",
       title: `${title} | ${site.name}`,
       description,
+      images: [image],
     },
     ...(index ? {} : { robots: { index: false, follow: true } }),
   };
